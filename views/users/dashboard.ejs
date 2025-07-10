@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagari - Discover Indonesia's Hidden Gems</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover {
+            color: #1e3a8a;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.85), rgba(59, 130, 246, 0.85)),
+            url("https://cdn.pixabay.com/photo/2022/09/03/15/57/lake-toba-7429893__340.jpg");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 2rem;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(30, 58, 138, 0.4);
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 4s;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 2rem 0;
+            background: #f8f9fa;
+        
+        }
+
+        .features-grid2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min-content, max-content));
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(30, 58, 138, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Destinations Section */
+        .destinations {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .destination-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .destination-image {
+            height: 200px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .destination-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><defs><linearGradient id="water" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%233b82f6;stop-opacity:1" /><stop offset="100%" style="stop-color:%231e3a8a;stop-opacity:1" /></linearGradient></defs><rect fill="url(%23water)" width="400" height="120"/><polygon fill="%23228B22" points="0,120 80,80 160,90 240,70 320,65 400,60 400,200 0,200"/><polygon fill="%2332CD32" points="0,140 100,105 200,115 300,95 400,90 400,200 0,200"/><circle fill="%23FFD700" cx="320" cy="40" r="25"/><path d="M100,105 Q150,95 200,105 Q250,115 300,105" stroke="%23006400" stroke-width="2" fill="none"/><rect fill="%238B4513" x="180" y="100" width="8" height="15"/><polygon fill="%23228B22" points="184,100 176,90 192,90"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .destination-content {
+            padding: 1.5rem;
+        }
+
+        .destination-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .destination-content p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .destination-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .rating {
+            color: #ffa500;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: #3b82f6;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #1e3a8a;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #3b82f6;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #555;
+            padding-top: 1rem;
+            color: #888;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .features-grid,
+            .destinations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Nagari Tikalak</div>
+            <ul class="nav-menu">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#destinations">Destinasi</a></li>
+                <li><a href="#about">Perangkat</a></li>
+                <li><a href="#contact">Wilayah dan Kependudukan</a></li>
+                <li><a href="#login">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <!-- <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div> -->
+        <div class="hero-content">
+            <h1>Nagari Tikalak</h1>
+            <p>X Koto Singkarak, Kabupaten Solok, Sumatera Barat</p>
+            <!-- <a href="#destinations" class="cta-button">Mulai Petualangan</a> -->
+        </div>
+    </section>
+    <!-- Features Section -->
+    <section class="features" id="about">
+    <div class="container">
+        <!-- Perangkat Nagari -->
+        <div class="features-grid2">
+        <% if (perangkat && perangkat.length > 0) { %>
+            <% perangkat.forEach(p => { %>
+            <div class="feature-card fade-in" style="text-align:center;">
+                <img src="/<%= p.foto %>" alt="<%= p.nama %>" style="width: 180px; border-radius: 12px; margin-bottom: 12px;">
+                <h3><%= p.nama %></h3>
+                <p><%= p.jabatan %></p>
+            </div>
+            <% }); %>
+        <% } else { %>
+            <p>Belum ada data perangkat nagari.</p>
+        <% } %>
+        </div>
+
+        <!-- Fitur Destinasi -->
+        <div class="features-grid" style="margin-top: 3rem;">
+        <div class="feature-card fade-in">
+            <div class="feature-icon">🏔️</div>
+            <h3>Destinasi Unik</h3>
+            <p>Jelajahi tempat-tempat menakjubkan yang jarang dikunjungi wisatawan, dari pegunungan hingga pantai tersembunyi</p>
+        </div>
+        <div class="feature-card fade-in">
+            <div class="feature-icon">🎭</div>
+            <h3>Budaya Lokal</h3>
+            <p>Rasakan pengalaman autentik dengan berinteraksi langsung dengan masyarakat lokal dan tradisi mereka</p>
+        </div>
+        <div class="feature-card fade-in">
+            <div class="feature-icon">🏕️</div>
+            <h3>UMKM Lokal</h3>
+            <p>Dukung usaha mikro, kecil, dan menengah lokal dengan berbelanja produk-produk mereka</p>
+        </div>
+        </div>
+
+    </div>
+    </section>
+
+
+    <!-- Destinations Section
+    <section class="destinations" id="destinations">
+        <div class="container">
+            <h2 class="section-title fade-in">Destinasi Populer</h2>
+            <div class="destinations-grid">
+                <div class="destination-card fade-in">
+                    <div class="destination-image"></div>
+                    <div class="destination-content">
+                        <h3>Danau Toba, Sumatera Utara</h3>
+                        <p>Danau vulkanik terbesar di Indonesia dengan keindahan alam yang memukau dan budaya Batak yang kaya</p>
+                        <div class="destination-meta">
+                            <span class="rating">★★★★★ 4.8</span>
+                            <span>2-3 Hari</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="destination-card fade-in">
+                    <div class="destination-image"></div>
+                    <div class="destination-content">
+                        <h3>Bromo Tengger, Jawa Timur</h3>
+                        <p>Gunung berapi aktif dengan pemandangan sunrise yang spektakuler dan lautan pasir yang menakjubkan</p>
+                        <div class="destination-meta">
+                            <span class="rating">★★★★☆ 4.6</span>
+                            <span>1-2 Hari</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="destination-card fade-in">
+                    <div class="destination-image"></div>
+                    <div class="destination-content">
+                        <h3>Labuan Bajo, Nusa Tenggara Timur</h3>
+                        <p>Gerbang menuju Pulau Komodo dengan keindahan laut yang jernih dan kehidupan bawah laut yang kaya</p>
+                        <div class="destination-meta">
+                            <span class="rating">★★★★★ 4.9</span>
+                            <span>3-4 Hari</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="destination-card fade-in">
+                    <div class="destination-image"></div>
+                    <div class="destination-content">
+                        <h3>Dieng Plateau, Jawa Tengah</h3>
+                        <p>Dataran tinggi dengan candi-candi kuno, danau berwarna-warni, dan pemandangan yang menakjubkan</p>
+                        <div class="destination-meta">
+                            <span class="rating">★★★★☆ 4.5</span>
+                            <span>2-3 Hari</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="destination-card fade-in">
+                    <div class="destination-image"></div>
+                    <div class="destination-content">
+                        <h3>Raja Ampat, Papua Barat</h3>
+                        <p>Surga bawah laut dengan keanekaragaman hayati tertinggi di dunia dan pemandangan yang eksotis</p>
+                        <div class="destination-meta">
+                            <span class="rating">★★★★★ 4.9</span>
+                            <span>5-7 Hari</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="destination-card fade-in">
+                    <div class="destination-image"></div>
+                    <div class="destination-content">
+                        <h3>Belitung, Bangka Belitung</h3>
+                        <p>Pulau dengan pantai berpasir putih, batu granit unik, dan air laut yang jernih berwarna biru</p>
+                        <div class="destination-meta">
+                            <span class="rating">★★★★☆ 4.7</span>
+                            <span>3-4 Hari</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Website Nagari Tikalak</h3>
+                    <p>Website Nagari Tikalak hadir sebagai pusat informasi nagari, kependudukan, dan layanan publik, sekaligus media promosi UMKM serta wisata lokal.</p>
+                    <div class="social-links">
+                        <a href="#">f</a>
+                        <a href="#">t</a>
+                        <a href="#">i</a>
+                        <a href="#">y</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Kontak</h3>
+                    <p>Email: info@nagari.id</p>
+                    <p>Phone: +62 21 1234 5678</p>
+                    <p>Address: Nagari Tikalak, X Koto Singkarak</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Nagari. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                if (isElementInViewport(element)) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScrollAnimation);
+        handleScrollAnimation(); // Initial check
+
+        // Parallax effect for floating elements
+        document.addEventListener('mousemove', function(e) {
+            const elements = document.querySelectorAll('.floating-element');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            elements.forEach((element, index) => {
+                const speed = (index + 1) * 0.3;
+                const xMove = (x - 0.5) * speed * 50;
+                const yMove = (y - 0.5) * speed * 50;
+                
+                element.style.transform = `translate(${xMove}px, ${yMove}px)`;
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>
