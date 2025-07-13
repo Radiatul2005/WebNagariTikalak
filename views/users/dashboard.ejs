@@ -103,10 +103,12 @@
         /* Hero Section */
         .hero {
             height: 100vh;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.85), rgba(59, 130, 246, 0.85)),
-            url("https://cdn.pixabay.com/photo/2022/09/03/15/57/lake-toba-7429893__340.jpg");
-            background-size: cover;
-            background-position: center;
+            background: 
+            linear-gradient(135deg, rgba(30, 58, 138, 0.85), rgba(59, 130, 246, 0.85)),
+            url("https://tse3.mm.bing.net/th/id/OIP.wC4AYgM4wxdutbD30i6I6gHaEV?rs=1&pid=ImgDetMain&o=7&rm=3");
+            background-size: cover, cover;
+            background-position: center, center;
+            background-repeat: no-repeat, no-repeat;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -501,23 +503,7 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">Nagari Tikalak</div>
-            <ul class="nav-menu">
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#destinations">Destinasi</a></li>
-                <li><a href="#about">Perangkat</a></li>
-                <li><a href="#contact">Wilayah dan Kependudukan</a></li>
-                <li><a href="#login">Login</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+    <%- include('../partials/header') %> 
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -761,5 +747,6 @@
             document.body.style.opacity = '1';
         });
     </script>
+     <%- include('../partials/footer') %> 
 </body>
 </html>

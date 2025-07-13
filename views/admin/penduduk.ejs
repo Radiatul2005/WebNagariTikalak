@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* General Styles (Consistent with dashboard.ejs) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa; /* Consistent background color */
+            padding-top: 70px; /* Padding for fixed navbar (adjust if your navbar height changes) */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* --- Navbar Styles (COPIED FROM dashboard.ejs FOR CONSISTENCY) --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover {
+            color: #1e3a3a; /* Darker blue on hover */
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        /* --- END Navbar Styles --- */
+
+        /* Container (General content container) */
+        .container {
+            max-width: 1200px;
+            margin: 2.5rem auto; /* Consistent margin */
+            padding: 0 2rem; /* Consistent padding */
+        }
+
+        /* Form & Table Container */
+        .form-table-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+        }
+
+        .form-table-container h3 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-sizing: border-box; /* Include padding and border in element's total width/height */
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group.checkbox {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .form-group.checkbox input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end; /* Align buttons to the right */
+        }
+
+        /* Button Styles (Consistent with dashboard.ejs) */
+        .btn {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem; /* Slightly smaller for table buttons */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-secondary {
+            background: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); /* Orange/Yellow for Edit */
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.2);
+        }
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); /* Red for Delete */
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.2);
+        }
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto; /* Enable horizontal scrolling on small screens */
+            margin-top: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .penduduk-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden; /* Ensures border-radius applies to table content */
+        }
+
+        .penduduk-table th,
+        .penduduk-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .penduduk-table th {
+            background: #f0f2f5; /* Lighter background for headers */
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .penduduk-table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .penduduk-table td {
+            font-size: 0.9rem;
+            color: #555;
+            vertical-align: middle;
+        }
+
+        .penduduk-table td:last-child {
+            white-space: nowrap; /* Prevent buttons from wrapping */
+        }
+        .penduduk-table td button {
+            margin-right: 5px; /* Space between buttons */
+            padding: 6px 10px; /* Smaller padding for table buttons */
+            font-size: 0.8rem;
+            border-radius: 5px; /* Smaller border-radius for table buttons */
+        }
+
+        /* Error/Message styles */
+        .error-message, .info-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            /* Navbar responsive handled by header.ejs script */
+            
+            .container {
+                padding: 0 1rem;
+                margin: 1.5rem auto;
+            }
+
+            .form-table-container {
+                padding: 1.5rem;
+            }
+
+            .form-table-container h3 {
+                font-size: 1.3rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+
+            .penduduk-table th,
+            .penduduk-table td {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+            .penduduk-table td button {
+                padding: 4px 8px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-table-container">
+            <h3 id="form-title">Tambah Data Penduduk</h3>
+            <form id="penduduk-form">
+                <input type="hidden" id="pendudukId" name="pendudukId">
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap:</label>
+                    <input type="text" id="nama" name="nama" required>
+                </div>
+                <div class="form-group">
+                    <label for="nik">NIK:</label>
+                    <input type="text" id="nik" name="nik" required pattern="\d{16}" title="NIK harus 16 digit angka">
+                </div>
+                <div class="form-group">
+                    <label for="nkk">Nomor KK:</label>
+                    <input type="text" id="nkk" name="nkk" required>
+                </div>
+                <div class="form-group">
+                    <label for="tanggalLahir">Tanggal Lahir:</label>
+                    <input type="date" id="tanggalLahir" name="tanggalLahir" required>
+                </div>
+                <div class="form-group">
+                    <label for="alamat">Alamat:</label>
+                    <textarea id="alamat" name="alamat" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="namaKepalaKeluarga">Nama Kepala Keluarga:</label>
+                    <input type="text" id="namaKepalaKeluarga" name="namaKepalaKeluarga" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="dapatBantuan" name="dapatBantuan">
+                    <label for="dapatBantuan">Menerima Bantuan Sosial?</label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Simpan Data</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('penduduk-form').reset(); document.getElementById('pendudukId').value=''; document.getElementById('form-title').innerText='Tambah Data Penduduk';">Reset Form</button>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem; text-align: center;">Daftar Penduduk</h3>
+                <table class="penduduk-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>NIK</th>
+                            <th>NOMOR KK</th>
+                            <th>Tgl. Lahir</th>
+                            <th>Alamat</th>
+                            <th>Kepala Keluarga</th>
+                            <th>Bantuan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="penduduk-table-body">
+                        <tr><td colspan="9" style="text-align: center; padding: 20px;">Memuat data...</td></tr> </tbody>
+                </table>
+            </div>
+            <div id="penduduk-list"></div> </div>
+    </div>
+
+<script>
+        // Frontend JavaScript for CRUD operations
+        document.addEventListener('DOMContentLoaded', fetchPendudukData);
+
+        // Function to display messages (alerts)
+        function showMessage(message, type = 'info') {
+            const messageDiv = document.getElementById('penduduk-list');
+            messageDiv.innerHTML = `<p class="${type}-message">${message}</p>`;
+            // Optionally, clear message after some time
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        // Fetch (Read) all penduduk data
+        async function fetchPendudukData() {
+            try {
+                const response = await fetch('/penduduk/api/penduduk'); // Correct endpoint
+                const data = await response.json();
+
+                const tableBody = document.getElementById('penduduk-table-body');
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                if (data.error) {
+                    showMessage(`Error: ${data.error}`, 'error');
+                    tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Error memuat data: ${data.error}</td></tr>`; // colspan updated to 9
+                    return;
+                }
+
+                if (data.data && data.data.length > 0) {
+                    let no = 1;
+                    data.data.forEach(penduduk => {
+                        const row = tableBody.insertRow();
+                        // Make sure order and names match database columns AND editPenduduk parameters
+                        row.innerHTML = `
+                            <td>${no++}</td>
+                            <td>${penduduk.nama || ''}</td>
+                            <td>${penduduk.nik || ''}</td>
+                            <td>${penduduk.nkk || ''}</td> <td>${penduduk.tanggalLahir || ''}</td>
+                            <td>${penduduk.alamat || ''}</td>
+                            <td>${penduduk.namaKepalaKeluarga || ''}</td>
+                            <td>${(penduduk.dapatBantuan === 1 || penduduk.dapatBantuan === true) ? 'Ya' : 'Tidak'}</td>
+                            <td>
+                                <button class="btn btn-edit" onclick="editPenduduk(
+                                    '${penduduk.id}', 
+                                    '${penduduk.nama}', 
+                                    '${penduduk.nik}', 
+                                    '${penduduk.nkk || ''}',  '${penduduk.tanggalLahir}', 
+                                    '${penduduk.alamat}', 
+                                    '${penduduk.namaKepalaKeluarga}', 
+                                    ${penduduk.dapatBantuan}
+                                )">Edit</button>
+                                <button class="btn btn-delete" onclick="deletePenduduk('${penduduk.id}')">Hapus</button>
+                            </td>
+                        `;
+                    });
+                } else {
+                    tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Belum ada data penduduk.</td></tr>`; // colspan updated to 9
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                showMessage(`Gagal memuat data: ${error.message}`, 'error');
+                const tableBody = document.getElementById('penduduk-table-body');
+                tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Gagal memuat data: ${error.message}</td></tr>`; // colspan updated to 9
+            }
+        }
+
+        // Save (Create/Update) penduduk data
+        async function savePenduduk(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const id = form.pendudukId.value;
+            const nama = form.nama.value;
+            const nik = form.nik.value;
+            const nkk = form.nkk.value; // Get NKK value
+            const tanggalLahir = form.tanggalLahir.value;
+            const alamat = form.alamat.value;
+            const namaKepalaKeluarga = form.namaKepalaKeluarga.value;
+            const dapatBantuan = form.dapatBantuan.checked;
+
+            const pendudukData = { nama, nik, nkk, tanggalLahir, alamat, namaKepalaKeluarga, dapatBantuan }; // Include NKK in data object
+
+            let url = '/penduduk/api/penduduk';
+            let method = 'POST';
+
+            if (id) {
+                url = `/penduduk/api/penduduk/${id}`;
+                method = 'PUT';
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(pendudukData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showMessage(result.message, 'info');
+                    form.reset(); // Clear form
+                    form.pendudukId.value = ''; // Clear hidden ID
+                    document.getElementById('form-title').innerText = 'Tambah Data Penduduk';
+                    fetchPendudukData(); // Refresh table
+                } else {
+                    showMessage(`Error: ${result.error || result.message}`, 'error');
+                }
+            } catch (e) {
+                console.error("Error saving document: ", e);
+                showMessage("Gagal menyimpan data: " + e.message, 'error');
+            }
+        }
+
+        // Populate form for editing - Updated parameters to include nkk
+        function editPenduduk(id, nama, nik, nkk, tanggalLahir, alamat, namaKepalaKeluarga, dapatBantuan) {
+            const form = document.getElementById('penduduk-form');
+            form.pendudukId.value = id;
+            form.nama.value = nama;
+            form.nik.value = nik;
+            form.nkk.value = nkk; // Set NKK value
+            form.tanggalLahir.value = tanggalLahir;
+            form.alamat.value = alamat;
+            form.namaKepalaKeluarga.value = namaKepalaKeluarga;
+            form.dapatBantuan.checked = dapatBantuan;
+            document.getElementById('form-title').innerText = 'Edit Data Penduduk (ID: ' + id + ')';
+        }
+
+        // Delete a resident
+        async function deletePenduduk(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                try {
+                    const response = await fetch(`/penduduk/api/penduduk/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        showMessage(result.message, 'info');
+                        fetchPendudukData(); // Refresh table
+                    } else {
+                        showMessage(`Error: ${result.error || result.message}`, 'error');
+                    }
+                } catch (e) {
+                    console.error("Error deleting document: ", e);
+                    showMessage("Gagal menghapus data: " + e.message, 'error');
+                }
+            }
+        }
+        
+        // Attach savePenduduk to form submission
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('penduduk-form').addEventListener('submit', savePenduduk);
+        });
+    </script>
+</body>
+</html>

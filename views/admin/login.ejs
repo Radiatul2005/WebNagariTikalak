@@ -18,7 +18,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0;
     }
 
     .login-container {
@@ -31,28 +30,19 @@
       height: 90vh;
       display: flex;
       position: relative;
+      transition: box-shadow 0.3s;
     }
 
-    .left-section {
-      flex: 1;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 600"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%2387CEEB;stop-opacity:1" /><stop offset="100%" style="stop-color:%23E0F6FF;stop-opacity:1" /></linearGradient></defs><rect fill="url(%23sky)" width="500" height="300"/><polygon fill="%23228B22" points="0,300 100,200 200,220 300,180 400,160 500,140 500,600 0,600"/><polygon fill="%2332CD32" points="0,320 120,240 250,260 380,200 500,180 500,600 0,600"/><polygon fill="%2390EE90" points="0,350 150,280 280,300 420,250 500,230 500,600 0,600"/><circle fill="%23FFFFFF" opacity="0.8" cx="400" cy="80" r="50"/><circle fill="%23F0F0F0" opacity="0.6" cx="420" cy="70" r="30"/><circle fill="%23E0E0E0" opacity="0.4" cx="440" cy="60" r="20"/><path d="M150,280 Q200,260 250,280 Q300,300 350,280 Q400,260 450,280" stroke="%23006400" stroke-width="3" fill="none"/><circle fill="%23B8860B" cx="200" cy="290" r="4"/><circle fill="%23B8860B" cx="300" cy="285" r="3"/><circle fill="%238B4513" cx="180" cy="295" r="2"/><rect fill="%238B4513" x="195" y="285" width="10" height="15"/></svg>');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 30px;
-      color: white;
-      position: relative;
+    .login-container:hover {
+      box-shadow: 0 35px 70px rgba(0,0,0,0.20);
     }
 
     .left-section2 {
       flex: 1;
-      background-image: url('https://kabapedia.com/wp-content/uploads/2023/05/Desain-tanpa-judul-2023-05-02T222210.301.jpg');
+      background-image: url('https://1001indonesia.net/asset/2019/10/Danau-Singkarak.jpg');
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -60,20 +50,28 @@
       padding: 30px;
       color: white;
       position: relative;
+      min-width: 220px;
     }
 
-
-    .left-section::before {
+    .left-section2::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+      background: rgba(0, 0, 0, 0.4);
       z-index: 1;
     }
 
     .left-content {
       position: relative;
       z-index: 2;
+      width: 100%;
+      text-align: left;
+      animation: fadeInLeft 1s;
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-40px);}
+      to { opacity: 1; transform: translateX(0);}
     }
 
     .main-title {
@@ -92,38 +90,24 @@
 
     .right-section {
       flex: 1;
-      padding: 30px;
+      padding: 40px 30px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       background: white;
       overflow-y: auto;
+      min-width: 220px;
+      animation: fadeInRight 1s;
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(40px);}
+      to { opacity: 1; transform: translateX(0);}
     }
 
     .form-header {
       text-align: center;
       margin-bottom: 30px;
-    }
-
-    .form-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 20px;
-    }
-
-    .tab {
-      font-size: 14px;
-      font-weight: 500;
-      color: #666;
-      cursor: pointer;
-      padding-bottom: 8px;
-      border-bottom: 2px solid transparent;
-    }
-
-    .tab.active {
-      color: #667eea;
-      border-bottom-color: #667eea;
     }
 
     .welcome-back {
@@ -134,7 +118,7 @@
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
 
     .form-group label {
@@ -147,27 +131,39 @@
 
     .form-group input {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
+      padding: 14px;
+      border: 1.5px solid #ccc;
       border-radius: 8px;
       background: #f9f9f9;
-      font-size: 14px;
+      font-size: 15px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px #667eea33;
+      background: #fff;
     }
 
     .login-button {
       width: 100%;
-      padding: 12px;
-      background: #667eea;
+      padding: 14px;
+      background: linear-gradient(90deg, #667eea 60%, #764ba2 100%);
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: bold;
       cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 10px;
+      box-shadow: 0 2px 8px #667eea22;
     }
 
-    .login-button:hover {
-      background: #5a67d8;
+    .login-button:hover, .login-button:focus {
+      background: linear-gradient(90deg, #5a67d8 60%, #5f3b8a 100%);
+      transform: translateY(-2px) scale(1.03);
     }
 
     .error-message {
@@ -178,22 +174,58 @@
       margin-bottom: 20px;
       text-align: center;
       font-size: 13px;
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0);}
+      25% { transform: translateX(-5px);}
+      50% { transform: translateX(5px);}
+      75% { transform: translateX(-5px);}
+      100% { transform: translateX(0);}
+    }
+
+    @media (max-width: 900px) {
+      .login-container {
+        max-width: 95vw;
+        height: auto;
+      }
+      .left-section2, .right-section {
+        min-width: 180px;
+      }
     }
 
     @media (max-width: 768px) {
       .login-container {
         flex-direction: column;
         height: auto;
-        max-height: none;
+        min-height: 100vh;
       }
-
-      .left-section {
-        padding: 30px;
+      .left-section2, .right-section {
+        width: 100%;
+        padding: 30px 18px;
+      }
+      .left-content {
         text-align: center;
       }
+    }
 
-      .right-section {
-        padding: 30px;
+    @media (max-width: 480px) {
+      .login-container {
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .left-section2, .right-section {
+        padding: 18px 8px;
+      }
+      .main-title {
+        font-size: 28px !important;
+      }
+      .welcome-text {
+        font-size: 18px !important;
+      }
+      .subtitle {
+        font-size: 14px !important;
       }
     }
   </style>
@@ -201,14 +233,12 @@
 <body>
   <div class="login-container">
     <div class="left-section2">
-    <div class="left-content" >
+      <div class="left-content">
         <div class="welcome-text" style="font-size: 24px; font-weight: bold;">X KOTO SINGKARAK</div>
         <div class="main-title" style="font-size: 40px; font-weight: bold;">NAGARI TIKALAK</div>
         <div class="subtitle" style="font-size: 18px; margin-top: 10px;">Manajemen Data dan Informasi Nagari</div>
+      </div>
     </div>
-    </div>
-
-
     <div class="right-section">
       <div class="form-header">
         <div class="welcome-back">WELCOME BACK!</div>
@@ -218,17 +248,15 @@
         <div class="error-message"><%= error %></div>
       <% } %>
 
-      <form method="POST" action="/login">
+      <form method="POST" action="/admin/login" autocomplete="on">
         <div class="form-group">
           <label for="username">Username</label>
-          <input id="username" name="username" type="text" required placeholder="Enter username">
+          <input id="username" name="username" type="text" required placeholder="Enter username" autocomplete="username">
         </div>
-
         <div class="form-group">
           <label for="password">Password</label>
-          <input id="password" name="password" type="password" required placeholder="Enter password">
+          <input id="password" name="password" type="password" required placeholder="Enter password" autocomplete="current-password">
         </div>
-
         <button type="submit" class="login-button">Sign In</button>
       </form>
     </div>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSID - Nagari Tikalak</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-icon {
+            padding: 8px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .header-icon:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-avatar {
+            width: 35px;
+            height: 35px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1e293b 0%, #1e40af 100%);
+            color: white;
+            padding: 0;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: #2563eb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .menu-section {
+            padding: 20px 0;
+        }
+
+        .menu-title {
+            padding: 0 25px 15px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #a5b4fc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-item {
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-left-color: #3b82f6;
+        }
+
+        .menu-item.active {
+            background: rgba(59, 130, 246, 0.25);
+            border-left-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .menu-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background: white;
+        }
+
+        .page-header {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .update-alert {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+        }
+
+        .update-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .update-text {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.95;
+            margin-bottom: 15px;
+        }
+
+        .update-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 58, 138, 0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(30, 58, 138, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        .stat-card.purple::before,
+        .stat-card.blue::before,
+        .stat-card.green::before,
+        .stat-card.red::before,
+        .stat-card.gray::before,
+        .stat-card.orange::before {
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .stat-button {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1e3a8a;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-button:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .sidebar-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+
+        .info-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .info-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .info-link:hover {
+            text-decoration: underline;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>OpenSID</h1>
+        <div class="header-right">
+            <div class="header-icons">
+                <div class="header-icon">🖨️</div>
+                <div class="header-icon">💬</div>
+                <div class="header-icon">📧</div>
+            </div>
+            <div class="admin-info">
+                <div class="admin-avatar">👤</div>
+                <span>Administrator</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">🏛️</div>
+                    <div>
+                        <div class="sidebar-title">Nagari Tikalak</div>
+                        <div class="sidebar-subtitle">Kecamatan X Koto Singkarak<br>Kabupaten Solok</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">Menu Utama</div>
+                <div class="menu-item active">
+                    <div class="menu-icon">🏠</div>
+                    <span>Home</span>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">ℹ️</div>
+                    <span>Info Desa</span>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">👥</div>
+                    <li><a href="/penduduk">Data Penduduk</a></li>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">📊</div>
+                    <span>Statistik</span>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">🎁</div>
+                    <span>Bantuan</span>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">🌾</div>
+                    <span>Pertanian</span>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">🏗️</div>
+                    <span>UMKM</span>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">🗺️</div>
+                    <span>Pemetaan</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="main-grid">
+                <div class="main-section">
+                    <div class="page-header">
+                        <h2 class="page-title">Tentang OpenSID</h2>
+                        <div class="breadcrumb">
+                            <span>🏠 Home</span>
+                            <span>→</span>
+                            <span>Nagari Tikalak</span>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card purple">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Wilayah Dusun</div>
+                            <button class="stat-button">
+                                Lihat Detail
+                                <span>→</span>
+                            </button>
+                        </div>
+
+                        <div class="stat-card blue">
+                            <div class="stat-number">97</div>
+                            <div class="stat-label">Penduduk</div>
+                            <button class="stat-button">
+                                <a href="/penduduk" style="text-decoration: none;">Lihat Detail</a>
+                                <span>→</span>
+                            </button>
+                        </div>
+
+                        <div class="stat-card green">
+                            <div class="stat-number">37</div>
+                            <div class="stat-label">Keluarga</div>
+                            <button class="stat-button">
+                                Lihat Detail
+                                <span>→</span>
+                            </button>
+                        </div>
+
+                        <div class="stat-card blue">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">Surat Tercetak</div>
+                            <button class="stat-button">
+                                Lihat Detail
+                                <span>→</span>
+                            </button>
+                        </div>
+
+                        <div class="stat-card red">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Kelompok</div>
+                            <button class="stat-button">
+                                Lihat Detail
+                                <span>→</span>
+                            </button>
+                        </div>
+
+                        <div class="stat-card gray">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Rumah Tangga</div>
+                            <button class="stat-button">
+                                Lihat Detail
+                                <span>→</span>
+                            </button>
+                        </div>
+
+                        <div class="stat-card orange">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">BPNT</div>
+                            <button class="stat-button">
+                                <span>⭐</span>
+                                Lihat Detail
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

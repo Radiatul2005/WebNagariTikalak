@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Wilayah Nagari Tikalak</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles (Consistent with dashboard.ejs) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa; /* Consistent background color */
+            padding-top: 70px; /* Padding for fixed navbar (adjust if your navbar height changes) */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* --- Navbar Styles (COPIED FROM dashboard.ejs FOR CONSISTENCY) --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover {
+            color: #1e3a8a;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        /* --- END Navbar Styles --- */
+
+        /* Header (Old .header div) - HIDDEN if replaced by navbar */
+        .header {
+            display: none; /* Hide the old header div */
+        }
+
+        /* Container (General content container) */
+        .container {
+            max-width: 1200px;
+            margin: 2.5rem auto; /* Consistent margin */
+            padding: 0 2rem; /* Consistent padding */
+        }
+
+        /* Controls Section (Consistent with dashboard.ejs feature-card styling) */
+        .controls {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px; /* Consistent border-radius */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+            margin-bottom: 2.5rem;
+        }
+
+        .controls h3 {
+            color: #333; /* Consistent text color */
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .control-item {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); /* Consistent button gradient */
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 50px; /* Consistent button border-radius */
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.3); /* Consistent button shadow */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(30, 58, 138, 0.4);
+        }
+
+        .btn-secondary {
+            background: #666; /* Consistent secondary button color */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Map Container */
+        .map-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px; /* Consistent border-radius */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+            margin-bottom: 2.5rem;
+        }
+
+        .map-container h3 {
+            color: #333;
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        #map {
+            width: 100%;
+            height: 600px;
+            border-radius: 15px; /* Consistent border-radius */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Consistent shadow */
+        }
+
+        /* --- Info Panel Styles (Optimized for 3 columns & consistent with dashboard.ejs) --- */
+        .info-panel {
+            background: white; /* Consistent background */
+            padding: 1.5rem; /* Reduced padding for more compactness */
+            border-radius: 15px; /* Consistent border-radius */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+        }
+
+        .info-panel h3 {
+            color: #333; /* Consistent text color */
+            margin-bottom: 1rem; /* Reduced margin */
+            font-size: 1.2rem; /* Slightly smaller font size */
+            font-weight: 600;
+        }
+
+        .info-grid {
+            display: grid;
+            /* Adjust minmax to try for 3 columns while allowing flexibility */
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 1rem; /* Reduced gap between cards */
+        }
+
+        .info-card {
+            background: white; /* White background */
+            padding: 1rem; /* Reduced padding for compactness */
+            border-radius: 15px; /* Consistent border-radius */
+            border: 1px solid #e0e0e0; /* Subtle border */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+            transition: all 0.3s ease;
+            min-width: 0; /* Ensures cards can shrink if needed */
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px); /* Subtle hover effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Increased shadow on hover */
+        }
+
+        .info-card h4 {
+            color: #333; /* Consistent text color */
+            margin-bottom: 0.6rem; /* Reduced margin */
+            font-size: 1rem; /* Slightly smaller font size */
+            font-weight: 600;
+        }
+
+        .info-card p {
+            color: #666; /* Consistent secondary text color */
+            font-size: 0.85rem; /* Slightly smaller font size */
+            line-height: 1.5; /* Adjusted line height */
+            margin-bottom: 0.3rem; /* Reduced margin */
+        }
+
+        .coordinates {
+            font-family: monospace;
+            background: #e2e8f0; /* Consistent background color */
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem; /* Slightly smaller font size */
+            color: #333;
+        }
+        /* --- END Info Panel Styles --- */
+
+        /* --- Footer Styles (COPIED FROM dashboard.ejs FOR CONSISTENCY) --- */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: #3b82f6;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #1e3a8a;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #3b82f6;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #555;
+            padding-top: 1rem;
+            color: #888;
+        }
+        /* --- END Footer Styles --- */
+
+
+        /* Responsive Adjustments (Specific to wilayah.ejs, also consistent) */
+        @media (max-width: 768px) {
+            /* Navbar responsive handled by header.ejs script */
+            
+            .container {
+                padding: 0 1rem;
+                margin: 1.5rem auto;
+            }
+
+            .controls {
+                padding: 1.5rem;
+            }
+
+            .control-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .control-item {
+                min-width: auto;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            #map {
+                height: 350px; 
+            }
+
+            .info-panel {
+                padding: 1rem; /* Smaller padding on mobile */
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr; /* Stack cards on mobile */
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <div class="container">
+
+
+        <div class="map-container">
+            <h3>🗺️ Peta Interaktif</h3>
+            <div id="map"></div>
+        </div>
+
+        <div class="info-panel">
+            <h3>📋 Informasi Wilayah</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>📍 Lokasi Pusat Nagari</h4>
+                    <p><strong>Koordinat:</strong> <span class="coordinates">-0.6655490089802755, 100.59429003689273</span></p>
+                    <p><strong>Ketinggian:</strong> ±500 mdpl</p>
+                    <p><strong>Zona Waktu:</strong> WIB (UTC+7)</p>
+                </div>
+                <div class="info-card">
+                    <h4>🏛️ Alamat Kantor Nagari</h4>
+                    <p>Nagari Tikalak, Kecamatan X Koto Singkarak</p>
+                    <p>Kabupaten Solok, Sumatera Barat</p>
+                    <p><strong>Kode Pos:</strong> 27365</p>
+                </div>
+                <div class="info-card">
+                    <h4>🚗 Akses Transportasi</h4>
+                    <p>• Jalan Raya Padang - Solok</p>
+                    <p>• Angkutan Umum tersedia</p>
+                    <p>• Akses ojek online</p>
+                </div>
+                <div class="info-card">
+                    <h4>🏞️ Batas Wilayah</h4>
+                    <p><strong>Utara:</strong> Nagari Koto Baru</p>
+                    <p><strong>Selatan:</strong> Nagari Sumani</p>
+                    <p><strong>Timur:</strong> Danau Singkarak</p>
+                    <p><strong>Barat:</strong> Nagari Paninjauan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
+
+    <script>
+        let map;
+        let directionsService;
+        let directionsRenderer;
+        let nagariMarker;
+
+        // Koordinat Nagari Tikalak (SUDAH DIPERBARUI)
+        const nagariTikalak = {
+            lat: -0.6655490089802755, // Lintang baru
+            lng: 100.59429003689273 // Bujur baru
+        };
+
+        // This function is called by the Google Maps API script once it's loaded
+        function initMap() {
+            // Inisialisasi peta
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: nagariTikalak,
+                mapTypeId: 'roadmap', 
+                styles: [
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels',
+                        stylers: [{ visibility: 'on' }]
+                    }
+                ]
+            });
+
+            // Inisialisasi directions service
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                draggable: true,
+                panel: null 
+            });
+            directionsRenderer.setMap(map);
+
+            // Marker untuk Nagari Tikalak
+            nagariMarker = new google.maps.Marker({
+                position: nagariTikalak,
+                map: map,
+                title: 'Kantor Nagari Tikalak',
+                icon: {
+                    url: 'data:image/svg+xml;base64,' + btoa(`
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24">
+                            <path fill="#1e3a8a" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(40, 40)
+                }
+            });
+
+            // Info window untuk marker
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div style="padding: 10px;">
+                        <h3 style="color: #1e3a8a; margin: 0 0 10px 0;">Nagari Tikalak</h3>
+                        <p style="margin: 0;"><strong>Kecamatan:</strong> X Koto Singkarak</p>
+                        <p style="margin: 0;"><strong>Kabupaten:</strong> Solok</p>
+                        <p style="margin: 0;"><strong>Provinsi:</strong> Sumatera Barat</p>
+                        <p style="margin: 10px 0 0 0;"><strong>Koordinat:</strong> ${nagariTikalak.lat}, ${nagariTikalak.lng}</p>
+                    </div>
+                `
+            });
+
+            nagariMarker.addListener('click', function() {
+                infoWindow.open(map, nagariMarker);
+            });
+
+            // Autocomplete untuk input origin
+            const originInput = document.getElementById('origin');
+            const autocomplete = new google.maps.places.Autocomplete(originInput);
+            autocomplete.bindTo('bounds', map); 
+        }
+
+        function calculateRoute() {
+            const origin = document.getElementById('origin').value;
+            const travelMode = document.getElementById('travelMode').value;
+
+            if (!origin) {
+                alert('Silakan masukkan lokasi asal terlebih dahulu.');
+                return;
+            }
+
+            const request = {
+                origin: origin,
+                destination: nagariTikalak,
+                travelMode: google.maps.TravelMode[travelMode],
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            };
+
+            directionsService.route(request, function(result, status) {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(result);
+                    
+                    // Tampilkan informasi rute
+                    const route = result.routes[0];
+                    const leg = route.legs[0];
+                    
+                    alert(`Rute berhasil ditemukan!\n\nJarak: ${leg.distance.text}\nWaktu tempuh: ${leg.duration.text}\nMode: ${getModeName(travelMode)}`);
+                } else {
+                    alert('Gagal menghitung rute: ' + status + '. Pastikan lokasi asal valid dan terjangkau.');
+                }
+            });
+        }
+
+        function clearRoute() {
+            directionsRenderer.setDirections({routes: []}); 
+            document.getElementById('origin').value = ''; 
+            map.setCenter(nagariTikalak); 
+            map.setZoom(14); 
+        }
+
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    // Reverse geocoding untuk mendapatkan alamat dari koordinat
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({location: pos}, function(results, status) {
+                        if (status === 'OK' && results[0]) {
+                            document.getElementById('origin').value = results[0].formatted_address;
+                        } else {
+                            document.getElementById('origin').value = `${pos.lat}, ${pos.lng}`; 
+                        }
+                    });
+
+                    // Zoom ke lokasi pengguna
+                    map.setCenter(pos);
+                    map.setZoom(15);
+
+                    // Tambahkan marker sementara untuk lokasi pengguna
+                    new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: 'Lokasi Anda',
+                        icon: {
+                            url: 'data:image/svg+xml;base64,' + btoa(`
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="8" fill="#22c55e" stroke="#fff" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="3" fill="#fff"/>
+                                </svg>
+                            `),
+                            scaledSize: new google.maps.Size(30, 30)
+                        }
+                    });
+                }, function(error) {
+                    console.error("Geolocation error:", error);
+                    let errorMessage = "Gagal mendapatkan lokasi Anda.";
+                    if (error.code === error.PERMISSION_DENIED) {
+                        errorMessage += " Pastikan Anda mengizinkan akses lokasi di browser.";
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        errorMessage += " Informasi lokasi tidak tersedia.";
+                    } else if (error.code === error.TIMEOUT) {
+                        errorMessage += " Waktu untuk mendapatkan lokasi habis.";
+                    }
+                    alert(errorMessage);
+                });
+            } else {
+                alert('Geolocation tidak didukung oleh browser ini.');
+            }
+        }
+
+        // Helper function to get readable mode names
+        function getModeName(mode) {
+            const modes = {
+                'DRIVING': 'Berkendara',
+                'WALKING': 'Berjalan Kaki',
+                'TRANSIT': 'Transportasi Umum',
+                'BICYCLING': 'Bersepeda'
+            };
+            return modes[mode] || mode;
+        }
+
+        // Error handling for Google Maps API loading
+        function handleMapError() {
+            document.getElementById('map').innerHTML = `
+                <div class="loading">
+                    <h3>⚠️ Tidak dapat memuat peta</h3>
+                    <p>Silakan periksa koneksi internet Anda atau pastikan Google Maps API Key Anda sudah benar dan aktif.</p>
+                </div>
+            `;
+        }
+
+        // Fungsi baru untuk memuat skrip Google Maps secara dinamis
+        function loadGoogleMapsScript(apiKey) {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,directions&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            script.onerror = handleMapError; // Melampirkan error handler yang lebih andal
+            document.head.appendChild(script);
+        }
+
+        // Panggil fungsi untuk memuat peta dengan API key Anda
+        loadGoogleMapsScript('<%= googleMapsApiKey %>');
+    </script>
+    </body>
+</html>
