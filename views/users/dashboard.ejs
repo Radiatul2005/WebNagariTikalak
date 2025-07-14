@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nagari - Discover Indonesia's Hidden Gems</title>
     <style>
         * {
             margin: 0;
@@ -523,8 +522,8 @@
     <div class="container">
         <!-- Perangkat Nagari -->
         <div class="features-grid2">
-        <% if (perangkat && perangkat.length > 0) { %>
-            <% perangkat.forEach(p => { %>
+        <% if (perangkat_nagari && perangkat_nagari.length > 0) { %>
+            <% perangkat_nagari.forEach(p => { %>
             <div class="feature-card fade-in" style="text-align:center;">
                 <img src="/<%= p.foto %>" alt="<%= p.nama %>" style="width: 180px; border-radius: 12px; margin-bottom: 12px;">
                 <h3><%= p.nama %></h3>

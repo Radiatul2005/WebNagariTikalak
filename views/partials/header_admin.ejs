@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenSID - Nagari Tikalak</title>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* ========================================================== */
+        /* SEMUA GAYA CSS UTAMA UNTUK DASHBOARD DAN HALAMAN PENDUDUK DISATUKAN DI SINI */
+        /* ========================================================== */
+
         * {
             margin: 0;
             padding: 0;
@@ -13,10 +19,11 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
+            background: #f8f9fa; /* Consistent background color for the body */
             min-height: 100vh;
         }
 
+        /* Header (Top Navbar) Styles */
         .header {
             background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
             color: white;
@@ -25,6 +32,11 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            /* Uncomment these if you want a fixed header */
+            /* position: fixed; */
+            /* top: 0; */
+            /* width: 100%; */
+            /* z-index: 1000; */
         }
 
         .header h1 {
@@ -72,11 +84,15 @@
             font-weight: bold;
         }
 
+        /* Container for Sidebar and Main Content */
         .container {
             display: flex;
-            min-height: calc(100vh - 70px);
+            /* If header is NOT fixed, remove padding-top from body and use min-height 100vh */
+            /* If header IS fixed, body needs padding-top: 70px; and this can be min-height: calc(100vh - 70px) */
+            min-height: calc(100vh); 
         }
 
+        /* Sidebar Styles */
         .sidebar {
             width: 280px;
             background: linear-gradient(180deg, #1e293b 0%, #1e40af 100%);
@@ -153,8 +169,21 @@
         .menu-item.active {
             background: rgba(59, 130, 246, 0.25);
             border-left-color: #3b82f6;
-            color: #3b82f6;
+            color: #fff; /* Keep white for active for better contrast with dark sidebar */
         }
+
+        .menu-item a {
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent (.menu-item or .menu-item.active) */
+            display: flex; /* Make the link occupy the full clickable area */
+            align-items: center;
+            flex-grow: 1; /* Allow the link to take available space */
+        }
+        
+        .menu-item a span {
+            flex-grow: 1; /* Allow the text inside the span to grow */
+        }
+
 
         .menu-icon {
             width: 18px;
@@ -164,10 +193,11 @@
             justify-content: center;
         }
 
+        /* Main Content Styles */
         .main-content {
             flex: 1;
             padding: 30px;
-            background: white;
+            background: white; /* Background for main content area */
         }
 
         .page-header {
@@ -223,6 +253,7 @@
             gap: 12px;
         }
 
+        /* General Button Styles for dashboard stats/buttons */
         .btn {
             padding: 8px 16px;
             border: none;
@@ -233,6 +264,7 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
+            justify-content: center; /* Centered content */
             gap: 6px;
         }
 
@@ -247,7 +279,7 @@
 
         .btn-secondary {
             background: rgba(30, 58, 138, 0.2);
-            color: white;
+            color: white; /* Changed to white for consistency with original sidebar buttons */
         }
 
         .btn-secondary:hover {
@@ -292,7 +324,7 @@
         .stat-card.red::before,
         .stat-card.gray::before,
         .stat-card.orange::before {
-            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%); /* Unified color for all stat card tops */
         }
 
         .stat-number {
@@ -374,6 +406,174 @@
             gap: 30px;
         }
 
+        /* --- Specific styles for Penduduk Form and Table --- */
+        .form-table-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+        }
+
+        .form-table-container h3 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Form Group (label + input/select/textarea) */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .form-group select { 
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-sizing: border-box; /* Include padding and border in element's total width/height */
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus { 
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group.checkbox {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .form-group.checkbox input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end; /* Align buttons to the right */
+        }
+
+        /* Specific Button Styles for Penduduk (edit/delete) */
+        /* These extend the general .btn styles */
+        .btn-edit {
+            background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); /* Orange/Yellow for Edit */
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.2);
+        }
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); /* Red for Delete */
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.2);
+        }
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Table Styles (Penduduk) */
+        .table-responsive {
+            overflow-x: auto; /* Enable horizontal scrolling on small screens */
+            margin-top: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .penduduk-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden; /* Ensures border-radius applies to table content */
+        }
+
+        .penduduk-table th,
+        .penduduk-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .penduduk-table th {
+            background: #f0f2f5; /* Lighter background for headers */
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .penduduk-table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .penduduk-table td {
+            font-size: 0.9rem;
+            color: #555;
+            vertical-align: middle;
+        }
+
+        .penduduk-table td:last-child {
+            white-space: nowrap; /* Prevent buttons from wrapping */
+        }
+        .penduduk-table td button {
+            margin-right: 5px; /* Space between buttons */
+            padding: 6px 10px; /* Smaller padding for table buttons */
+            font-size: 0.8rem;
+            border-radius: 5px; /* Smaller border-radius for table buttons */
+        }
+
+        /* Error/Message styles */
+        .error-message, .info-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+
+        /* Responsive Adjustments (General) */
         @media (max-width: 1200px) {
             .main-grid {
                 grid-template-columns: 1fr;
@@ -381,6 +581,16 @@
         }
 
         @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
             .container {
                 flex-direction: column;
             }
@@ -388,14 +598,44 @@
             .sidebar {
                 width: 100%;
                 height: auto;
+                order: 2; /* Puts sidebar below main content on small screens */
             }
             
             .main-content {
                 padding: 20px;
+                order: 1; /* Puts main content above sidebar on small screens */
             }
             
             .stats-grid {
                 grid-template-columns: 1fr;
+            }
+
+            /* Responsive for form/table */
+            .form-table-container {
+                padding: 1.5rem;
+            }
+
+            .form-table-container h3 {
+                font-size: 1.3rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+
+            .penduduk-table th,
+            .penduduk-table td {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+            .penduduk-table td button {
+                padding: 4px 8px;
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -415,55 +655,68 @@
             </div>
         </div>
     </div>
+    ```
 
-    <div class="container">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <div class="logo-icon">🏛️</div>
-                    <div>
-                        <div class="sidebar-title">Nagari Tikalak</div>
-                        <div class="sidebar-subtitle">Kecamatan X Koto Singkarak<br>Kabupaten Solok</div>
-                    </div>
-                </div>
-            </div>
+---
 
-            <div class="menu-section">
-                <div class="menu-title">Menu Utama</div>
-                <div class="menu-item active">
-                    <div class="menu-icon">🏠</div>
-                    <span>Home</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">ℹ️</div>
-                    <span>Info Desa</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">👥</div>
-                    <a href="/penduduk" style="text-decoration: none; color:white">Data Penduduk</a>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">📊</div>
-                    <span>Statistik</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">🎁</div>
-                    <span>Bantuan</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">🌾</div>
-                    <span>Pertanian</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">🏗️</div>
-                    <span>UMKM</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">🗺️</div>
-                    <span>Pemetaan</span>
+### 2. File: `views/partials/nav_sidebar.ejs` (Hanya HTML Sidebar)
+
+Ini adalah file `nav_sidebar.ejs` Anda. Ini hanya berisi **struktur HTML untuk sidebar navigasi**. Tidak ada CSS di sini.
+
+```ejs
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="logo-icon">🏛️</div>
+                <div>
+                    <div class="sidebar-title">Nagari Tikalak</div>
+                    <div class="sidebar-subtitle">Kecamatan X Koto Singkarak<br>Kabupaten Solok</div>
                 </div>
             </div>
         </div>
+
+        <div class="menu-section">
+            <div class="menu-title">Menu Utama</div>
+            <div class="menu-item <%= currentPage === 'home' ? 'active' : '' %>">
+                <div class="menu-icon">🏠</div>
+                <a href="/"><span>Home</span></a>
+            </div>
+            <div class="menu-item <%= currentPage === 'info_desa' ? 'active' : '' %>">
+                <div class="menu-icon">ℹ️</div>
+                <a href="/info-desa"><span>Info Desa</span></a>
+            </div>
+            <div class="menu-item <%= currentPage === 'penduduk' ? 'active' : '' %>">
+                <div class="menu-icon">👥</div>
+                <a href="/penduduk">Data Penduduk</a>
+            </div>
+            <div class="menu-item <%= currentPage === 'statistik' ? 'active' : '' %>">
+                <div class="menu-icon">📊</div>
+                <a href="/statistik"><span>Statistik</span></a>
+            </div>
+            <div class="menu-item <%= currentPage === 'bantuan' ? 'active' : '' %>">
+                <div class="menu-icon">🎁</div>
+                <a href="/bantuan"><span>Bantuan</span></a>
+            </div>
+            <div class="menu-item <%= currentPage === 'pertanian' ? 'active' : '' %>">
+                <div class="menu-icon">🌾</div>
+                <a href="/pertanian"><span>Pertanian</span></a>
+            </div>
+            <div class="menu-item <%= currentPage === 'umkm' ? 'active' : '' %>">
+                <div class="menu-icon">🏗️</div>
+                <a href="/umkm"><span>UMKM</span></a>
+            </div>
+            <div class="menu-item <%= currentPage === 'pemetaan' ? 'active' : '' %>">
+                <div class="menu-icon">🗺️</div>
+                <a href="/pemetaan"><span>Pemetaan</span></a>
+            </div>
+        </div>
+    </div>
+    ```
+
+<%- include('partials/header_top', { title: title }); %> <%# Memanggil header_top.ejs untuk <head> dan top bar %>
+
+    <div class="container">
+        <%- include('partials/nav_sidebar', { currentPage: 'home' }); %> <%# Memanggil nav_sidebar.ejs untuk sidebar %>
 
         <div class="main-content">
             <div class="main-grid">
@@ -488,7 +741,8 @@
                         </div>
 
                         <div class="stat-card blue">
-                            <div class="stat-number"><%= totalPenduduk %></div> <div class="stat-label">Penduduk</div>
+                            <div class="stat-number"><%= totalPenduduk %></div>
+                            <div class="stat-label">Penduduk</div>
                             <button class="stat-button">
                                 <a href="/penduduk" style="text-decoration: none; color: inherit;">Lihat Detail</a> <span>→</span>
                             </button>
