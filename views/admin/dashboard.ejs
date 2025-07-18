@@ -401,69 +401,7 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>OpenSID</h1>
-        <div class="header-right">
-            <div class="header-icons">
-                <div class="header-icon">🖨️</div>
-                <div class="header-icon">💬</div>
-                <div class="header-icon">📧</div>
-            </div>
-            <div class="admin-info">
-                <div class="admin-avatar">👤</div>
-                <span>Administrator</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <div class="logo-icon">🏛️</div>
-                    <div>
-                        <div class="sidebar-title">Nagari Tikalak</div>
-                        <div class="sidebar-subtitle">Kecamatan X Koto Singkarak<br>Kabupaten Solok</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-title">Menu Utama</div>
-                <div class="menu-item active">
-                    <div class="menu-icon">🏠</div>
-                    <span>Home</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">ℹ️</div>
-                    <span>Info Desa</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">👥</div>
-                    <a href="/penduduk" style="text-decoration: none; color:white">Data Penduduk</a>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">📊</div>
-                    <span>Statistik</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">🎁</div>
-                    <span>Bantuan</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">🌾</div>
-                    <span>Pertanian</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">🏗️</div>
-                    <span>UMKM</span>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-icon">🗺️</div>
-                    <span>Pemetaan</span>
-                </div>
-            </div>
-        </div>
+<%- include('../partials/header_admin', { title: 'Dashboard', currentPage: 'home' }) %>
 
         <div class="main-content">
             <div class="main-grid">
@@ -482,8 +420,7 @@
                             <div class="stat-number">4</div>
                             <div class="stat-label">Wilayah Dusun</div>
                             <button class="stat-button">
-                                Lihat Detail
-                                <span>→</span>
+                                <a href="/jorong" style="text-decoration: none; color: inherit;">Lihat Detail</a> <span>→</span>
                             </button>
                         </div>
 

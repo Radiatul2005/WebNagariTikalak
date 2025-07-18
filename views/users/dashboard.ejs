@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagari Tikalak</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
             overflow-x: hidden;
+            background-color: #ffffff;
         }
-
-        /* Navigation */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
         .navbar {
             position: fixed;
             top: 0;
@@ -28,12 +35,10 @@
             padding: 1rem 0;
             transition: all 0.3s ease;
         }
-
         .navbar.scrolled {
             background: rgba(255, 255, 255, 0.98);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
-
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -42,7 +47,6 @@
             align-items: center;
             padding: 0 2rem;
         }
-
         .logo {
             font-size: 2rem;
             font-weight: 700;
@@ -50,14 +54,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-decoration: none;
         }
-
         .nav-menu {
             display: flex;
             list-style: none;
             gap: 2rem;
         }
-
         .nav-menu a {
             text-decoration: none;
             color: #333;
@@ -65,7 +68,6 @@
             transition: color 0.3s ease;
             position: relative;
         }
-
         .nav-menu a::after {
             content: '';
             position: absolute;
@@ -76,33 +78,31 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             transition: width 0.3s ease;
         }
-
-        .nav-menu a:hover::after {
-            width: 100%;
-        }
-
-        .nav-menu a:hover {
-            color: #1e3a8a;
-        }
-
+        .nav-menu a:hover::after { width: 100%; }
+        .nav-menu a:hover { color: #1e3a8a; }
         .hamburger {
             display: none;
             flex-direction: column;
+            justify-content: space-between;
             cursor: pointer;
-        }
-
-        .hamburger span {
             width: 25px;
+            height: 20px;
+            padding: 2px 0;
+        }
+        .hamburger span {
+            width: 100%;
             height: 3px;
             background: #333;
             margin: 3px 0;
-            transition: 0.3s;
+            border-radius: 2px;
+            transition: all 0.3s ease;
         }
-
-        /* Hero Section */
+        .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
         .hero {
             height: 100vh;
-            background: 
+            background:
             linear-gradient(135deg, rgba(30, 58, 138, 0.85), rgba(59, 130, 246, 0.85)),
             url("https://tse3.mm.bing.net/th/id/OIP.wC4AYgM4wxdutbD30i6I6gHaEV?rs=1&pid=ImgDetMain&o=7&rm=3");
             background-size: cover, cover;
@@ -115,27 +115,23 @@
             color: white;
             position: relative;
         }
-
         .hero-content {
             max-width: 800px;
             padding: 0 2rem;
             z-index: 2;
         }
-
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
             opacity: 0;
             animation: fadeInUp 1s ease forwards;
         }
-
         .hero p {
             font-size: 1.2rem;
             margin-bottom: 2rem;
             opacity: 0;
             animation: fadeInUp 1s ease 0.3s forwards;
         }
-
         .cta-button {
             display: inline-block;
             padding: 1rem 2rem;
@@ -149,12 +145,10 @@
             animation: fadeInUp 1s ease 0.6s forwards;
             box-shadow: 0 10px 30px rgba(30, 58, 138, 0.3);
         }
-
         .cta-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(30, 58, 138, 0.4);
         }
-
         .floating-elements {
             position: absolute;
             top: 0;
@@ -163,85 +157,53 @@
             bottom: 0;
             pointer-events: none;
         }
-
         .floating-element {
             position: absolute;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             animation: float 6s ease-in-out infinite;
         }
-
-        .floating-element:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            width: 100px;
-            height: 100px;
-            animation-delay: 0s;
+        .floating-element:nth-child(1) { top: 20%; left: 10%; width: 100px; height: 100px; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 60%; right: 15%; width: 80px; height: 80px; animation-delay: 2s; }
+        .floating-element:nth-child(3) { bottom: 20%; left: 20%; width: 120px; height: 120px; animation-delay: 4s; }
+        .section-box {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+            padding: 3rem;
+            margin-top: 4rem;
+            margin-bottom: 4rem;
         }
-
-        .floating-element:nth-child(2) {
-            top: 60%;
-            right: 15%;
-            width: 80px;
-            height: 80px;
-            animation-delay: 2s;
-        }
-
-        .floating-element:nth-child(3) {
-            bottom: 20%;
-            left: 20%;
-            width: 120px;
-            height: 120px;
-            animation-delay: 4s;
-        }
-
-        /* Features Section */
         .features {
-            padding: 2rem 0;
-            background: #f8f9fa;
-        
+            padding: 0;
+            background: transparent;
         }
-
         .features-grid2 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min-content, max-content));
+            grid-template-columns: repeat(auto-fit, minmax(180px, max-content));
             gap: 2rem;
             justify-content: center;
-            margin-top: 0;
+            margin-top: 3rem;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
-        }
-
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
-
-
         .feature-card {
             background: white;
             padding: 2rem;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
         .feature-card::before {
             content: '';
             position: absolute;
@@ -249,19 +211,14 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(30, 58, 138, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(30, 58, 138, 0.05), transparent);
             transition: left 0.5s ease;
         }
-
-        .feature-card:hover::before {
-            left: 100%;
-        }
-
+        .feature-card:hover::before { left: 100%; }
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-
         .feature-icon {
             width: 80px;
             height: 80px;
@@ -274,130 +231,110 @@
             font-size: 2rem;
             color: white;
         }
-
         .feature-card h3 {
             font-size: 1.3rem;
             margin-bottom: 1rem;
             color: #333;
         }
-
         .feature-card p {
             color: #666;
             line-height: 1.6;
         }
-
-        /* Destinations Section */
-        .destinations {
-            padding: 5rem 0;
-            background: white;
+        .feature-card img {
+            width: 180px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            object-fit: cover;
+            height: 180px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
-        .destinations-grid {
+        .news-section {
+            padding: 0;
+            background: transparent;
+        }
+        .news-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
-
-        .destination-card {
+        .news-card {
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
-            position: relative;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
-
-        .destination-card:hover {
+        .news-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-
-        .destination-image {
+        .news-card-image {
+            width: 100%;
             height: 200px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            position: relative;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+        .news-card-content { padding: 1.5rem; }
+        .news-card-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #1e3a8a;
             overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-
-        .destination-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><defs><linearGradient id="water" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%233b82f6;stop-opacity:1" /><stop offset="100%" style="stop-color:%231e3a8a;stop-opacity:1" /></linearGradient></defs><rect fill="url(%23water)" width="400" height="120"/><polygon fill="%23228B22" points="0,120 80,80 160,90 240,70 320,65 400,60 400,200 0,200"/><polygon fill="%2332CD32" points="0,140 100,105 200,115 300,95 400,90 400,200 0,200"/><circle fill="%23FFD700" cx="320" cy="40" r="25"/><path d="M100,105 Q150,95 200,105 Q250,115 300,105" stroke="%23006400" stroke-width="2" fill="none"/><rect fill="%238B4513" x="180" y="100" width="8" height="15"/><polygon fill="%23228B22" points="184,100 176,90 192,90"/></svg>');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .destination-content {
-            padding: 1.5rem;
-        }
-
-        .destination-content h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .destination-content p {
-            color: #666;
+        .news-card-content p {
             font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
             margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        .destination-meta {
+        .news-card-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #888;
         }
-
-        .rating {
-            color: #ffa500;
-        }
-
-        /* Footer */
+        .news-card-meta .author, .news-card-meta .date { font-weight: 500; }
         .footer {
             background: #333;
             color: white;
             padding: 3rem 0 1rem;
             text-align: center;
+            margin-top: 0;
         }
-
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
         }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: #3b82f6;
-        }
-
+        .footer-section h3 { margin-bottom: 1rem; color: #3b82f6; }
         .footer-section p,
         .footer-section a {
             color: #ccc;
             text-decoration: none;
             line-height: 1.8;
         }
-
-        .footer-section a:hover {
-            color: #3b82f6;
-        }
-
+        .footer-section a:hover { color: #3b82f6; }
         .social-links {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin-top: 1rem;
         }
-
         .social-links a {
             width: 40px;
             height: 40px;
@@ -409,45 +346,35 @@
             justify-content: center;
             transition: all 0.3s ease;
         }
-
         .social-links a:hover {
             background: #3b82f6;
             transform: translateY(-3px);
         }
-
         .footer-bottom {
             border-top: 1px solid #555;
             padding-top: 1rem;
             color: #888;
         }
-
-        /* Animations */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
-
-        /* Responsive Design */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
         @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-
+            .nav-container, .container { padding: 0 1rem; }
+            .hamburger { display: flex; }
             .nav-menu {
                 position: fixed;
                 left: -100%;
@@ -456,296 +383,178 @@
                 background: white;
                 width: 100%;
                 text-align: center;
-                transition: 0.3s;
+                transition: 0.3s ease-in-out;
                 box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
                 padding: 2rem 0;
+                max-height: calc(100vh - 70px);
+                overflow-y: auto;
             }
-
-            .nav-menu.active {
-                left: 0;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .features-grid,
-            .destinations-grid {
+            .nav-menu.active { left: 0; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+            .section-title { font-size: 2rem; margin-bottom: 2rem; }
+            .features-grid, .destinations-grid, .news-grid, .features-grid2 {
                 grid-template-columns: 1fr;
             }
-
-            .container {
-                padding: 0 1rem;
+            .section-box {
+                padding: 2rem 1.5rem;
+                margin-top: 2.5rem;
+                margin-bottom: 2.5rem;
             }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <%- include('../partials/header') %> 
-
-    <!-- Hero Section -->
+    <%- include('../partials/header') %>
     <section class="hero" id="home">
-        <!-- <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-        </div> -->
         <div class="hero-content">
             <h1>Nagari Tikalak</h1>
             <p>X Koto Singkarak, Kabupaten Solok, Sumatera Barat</p>
-            <!-- <a href="#destinations" class="cta-button">Mulai Petualangan</a> -->
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
         </div>
     </section>
-    <!-- Features Section -->
     <section class="features" id="about">
-    <div class="container">
-        <!-- Perangkat Nagari -->
-        <div class="features-grid2">
-        <% if (perangkat_nagari && perangkat_nagari.length > 0) { %>
-            <% perangkat_nagari.forEach(p => { %>
-            <div class="feature-card fade-in" style="text-align:center;">
-                <img src="/<%= p.foto %>" alt="<%= p.nama %>" style="width: 180px; border-radius: 12px; margin-bottom: 12px;">
-                <h3><%= p.nama %></h3>
-                <p><%= p.jabatan %></p>
+        <div class="container section-box fade-in"> <h2 class="section-title">Perangkat Nagari</h2>
+            <div class="features-grid2">
+                <% if (perangkat_nagari && perangkat_nagari.length > 0) { %>
+                    <% perangkat_nagari.forEach(p => { %>
+                    <div class="feature-card fade-in">
+                        <img src="/<%= p.foto %>" alt="<%= p.nama %>">
+                        <h3><%= p.nama %></h3>
+                        <p><%= p.jabatan %></p>
+                    </div>
+                    <% }); %>
+                <% } else { %>
+                    <p class="fade-in" style="text-align: center; width: 100%; grid-column: 1 / -1;">Belum ada data perangkat nagari.</p>
+                <% } %>
             </div>
-            <% }); %>
-        <% } else { %>
-            <p>Belum ada data perangkat nagari.</p>
-        <% } %>
         </div>
-
-        <!-- Fitur Destinasi -->
-        <div class="features-grid" style="margin-top: 3rem;">
-        <div class="feature-card fade-in">
-            <div class="feature-icon">🏔️</div>
-            <h3>Destinasi Unik</h3>
-            <p>Jelajahi tempat-tempat menakjubkan yang jarang dikunjungi wisatawan, dari pegunungan hingga pantai tersembunyi</p>
-        </div>
-        <div class="feature-card fade-in">
-            <div class="feature-icon">🎭</div>
-            <h3>Budaya Lokal</h3>
-            <p>Rasakan pengalaman autentik dengan berinteraksi langsung dengan masyarakat lokal dan tradisi mereka</p>
-        </div>
-        <div class="feature-card fade-in">
-            <div class="feature-icon">🏕️</div>
-            <h3>UMKM Lokal</h3>
-            <p>Dukung usaha mikro, kecil, dan menengah lokal dengan berbelanja produk-produk mereka</p>
-        </div>
-        </div>
-
-    </div>
     </section>
-
-
-    <!-- Destinations Section
-    <section class="destinations" id="destinations">
-        <div class="container">
-            <h2 class="section-title fade-in">Destinasi Populer</h2>
-            <div class="destinations-grid">
-                <div class="destination-card fade-in">
-                    <div class="destination-image"></div>
-                    <div class="destination-content">
-                        <h3>Danau Toba, Sumatera Utara</h3>
-                        <p>Danau vulkanik terbesar di Indonesia dengan keindahan alam yang memukau dan budaya Batak yang kaya</p>
-                        <div class="destination-meta">
-                            <span class="rating">★★★★★ 4.8</span>
-                            <span>2-3 Hari</span>
+    <section class="news-section" id="berita">
+        <div class="container section-box fade-in"> <h2 class="section-title">Berita Terkini</h2>
+            <div class="news-grid">
+                <% if (berita && berita.length > 0) { %>
+                    <% berita.slice(0, 3).forEach(item => { %>
+                    <a href="/berita-public/<%= item.id %>" class="news-card fade-in">
+                        <img src="<%= item.gambar || '/uploads/berita/default-news.jpg' %>" alt="<%= item.judul %>" class="news-card-image">
+                        <div class="news-card-content">
+                            <h3><%= item.judul %></h3>
+                            <p><%= item.isi_berita.substring(0, 120) %>...</p>
+                            <div class="news-card-meta">
+                                <span class="date">📅 <%= new Date(item.tanggal_dibuat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></span>
+                                <span class="author">✍️ <%= item.author %></span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
+                    <% }); %>
+                <% } else { %>
+                    <p class="fade-in" style="text-align: center; width: 100%; grid-column: 1 / -1;">Belum ada berita yang dipublikasikan.</p>
+                <% } %>
+            </div>
+            <% if (berita && berita.length > 3) { %>
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="/berita-public" class="cta-button fade-in">Lihat Semua Berita</a>
                 </div>
-                <div class="destination-card fade-in">
-                    <div class="destination-image"></div>
-                    <div class="destination-content">
-                        <h3>Bromo Tengger, Jawa Timur</h3>
-                        <p>Gunung berapi aktif dengan pemandangan sunrise yang spektakuler dan lautan pasir yang menakjubkan</p>
-                        <div class="destination-meta">
-                            <span class="rating">★★★★☆ 4.6</span>
-                            <span>1-2 Hari</span>
-                        </div>
-                    </div>
+            <% } %>
+        </div>
+    </section>
+    <section class="features">
+        <div class="container section-box fade-in"> <h2 class="section-title">Pelayanan Kami</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🏔️</div>
+                    <h3>Destinasi Unik</h3>
+                    <p>Jelajahi tempat-tempat menakjubkan yang jarang dikunjungi wisatawan, dari pegunungan hingga pantai tersembunyi.</p>
                 </div>
-                <div class="destination-card fade-in">
-                    <div class="destination-image"></div>
-                    <div class="destination-content">
-                        <h3>Labuan Bajo, Nusa Tenggara Timur</h3>
-                        <p>Gerbang menuju Pulau Komodo dengan keindahan laut yang jernih dan kehidupan bawah laut yang kaya</p>
-                        <div class="destination-meta">
-                            <span class="rating">★★★★★ 4.9</span>
-                            <span>3-4 Hari</span>
-                        </div>
-                    </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎭</div>
+                    <h3>Budaya Lokal</h3>
+                    <p>Rasakan pengalaman autentik dengan berinteraksi langsung dengan masyarakat lokal dan tradisi mereka.</p>
                 </div>
-                <div class="destination-card fade-in">
-                    <div class="destination-image"></div>
-                    <div class="destination-content">
-                        <h3>Dieng Plateau, Jawa Tengah</h3>
-                        <p>Dataran tinggi dengan candi-candi kuno, danau berwarna-warni, dan pemandangan yang menakjubkan</p>
-                        <div class="destination-meta">
-                            <span class="rating">★★★★☆ 4.5</span>
-                            <span>2-3 Hari</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="destination-card fade-in">
-                    <div class="destination-image"></div>
-                    <div class="destination-content">
-                        <h3>Raja Ampat, Papua Barat</h3>
-                        <p>Surga bawah laut dengan keanekaragaman hayati tertinggi di dunia dan pemandangan yang eksotis</p>
-                        <div class="destination-meta">
-                            <span class="rating">★★★★★ 4.9</span>
-                            <span>5-7 Hari</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="destination-card fade-in">
-                    <div class="destination-image"></div>
-                    <div class="destination-content">
-                        <h3>Belitung, Bangka Belitung</h3>
-                        <p>Pulau dengan pantai berpasir putih, batu granit unik, dan air laut yang jernih berwarna biru</p>
-                        <div class="destination-meta">
-                            <span class="rating">★★★★☆ 4.7</span>
-                            <span>3-4 Hari</span>
-                        </div>
-                    </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🏕️</div>
+                    <h3>UMKM Lokal</h3>
+                    <p>Dukung usaha mikro, kecil, dan menengah lokal dengan berbelanja produk-produk mereka.</p>
                 </div>
             </div>
         </div>
-    </section> -->
-
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Website Nagari Tikalak</h3>
-                    <p>Website Nagari Tikalak hadir sebagai pusat informasi nagari, kependudukan, dan layanan publik, sekaligus media promosi UMKM serta wisata lokal.</p>
-                    <div class="social-links">
-                        <a href="#">f</a>
-                        <a href="#">t</a>
-                        <a href="#">i</a>
-                        <a href="#">y</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Kontak</h3>
-                    <p>Email: info@nagari.id</p>
-                    <p>Phone: +62 21 1234 5678</p>
-                    <p>Address: Nagari Tikalak, X Koto Singkarak</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Nagari. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
+    </section>
+    <%- include('../partials/footer') %>
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            hamburger.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                });
+            });
+            document.querySelectorAll('a.nav-link').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                        const targetPosition = targetElement.offsetTop - navbarHeight - 30;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.left >= 0 &&
+                    rect.bottom >= 0 &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
             }
-        });
-
-        // Mobile menu toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-
-        hamburger.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', function() {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
+            function handleScrollAnimation() {
+                const elements = document.querySelectorAll('.fade-in');
+                elements.forEach(element => {
+                    if (isElementInViewport(element)) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            window.addEventListener('scroll', handleScrollAnimation);
+            handleScrollAnimation();
+            document.addEventListener('mousemove', function(e) {
+                const elements = document.querySelectorAll('.floating-element');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                elements.forEach((element, index) => {
+                    const speed = (index + 1) * 0.3;
+                    const xMove = (x - 0.5) * speed * 50;
+                    const yMove = (y - 0.5) * speed * 50;
+                    element.style.transform = `translate(${xMove}px, ${yMove}px)`;
+                });
             });
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+            window.addEventListener('load', function() {
+                document.body.style.opacity = '1';
             });
-        });
-
-        // Scroll animations
-        function isElementInViewport(el) {
-            const rect = el.getBoundingClientRect();
-            return (
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        }
-
-        function handleScrollAnimation() {
-            const elements = document.querySelectorAll('.fade-in');
-            elements.forEach(element => {
-                if (isElementInViewport(element)) {
-                    element.classList.add('visible');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', handleScrollAnimation);
-        handleScrollAnimation(); // Initial check
-
-        // Parallax effect for floating elements
-        document.addEventListener('mousemove', function(e) {
-            const elements = document.querySelectorAll('.floating-element');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            elements.forEach((element, index) => {
-                const speed = (index + 1) * 0.3;
-                const xMove = (x - 0.5) * speed * 50;
-                const yMove = (y - 0.5) * speed * 50;
-                
-                element.style.transform = `translate(${xMove}px, ${yMove}px)`;
-            });
-        });
-
-        // Add loading animation
-        window.addEventListener('load', function() {
-            document.body.style.opacity = '1';
         });
     </script>
-     <%- include('../partials/footer') %> 
 </body>
 </html>

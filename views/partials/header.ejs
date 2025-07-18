@@ -1,6 +1,11 @@
 <nav class="navbar">
     <div class="nav-container">
         <div class="logo">Nagari Tikalak</div>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <ul class="nav-menu">
             <li><a href="/dashboard">Beranda</a></li>
             <li><a href="#destinations">Destinasi</a></li>
@@ -9,16 +14,10 @@
             <li><a href="#kependudukan">Kependudukan</a></li>
             <li><a href="../admin/login">Login</a></li>
         </ul>
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
     </div>
 </nav>
 
 <style>
-/* Navbar dasar */
 .navbar {
     width: 100%;
     background: #fff;
@@ -34,6 +33,7 @@
     align-items: center;
     padding: 0 24px;
     height: 60px;
+    position: relative;
 }
 .logo {
     font-weight: bold;
@@ -94,22 +94,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
 
-    // Navbar scroll effect
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Mobile menu toggle
     hamburger.addEventListener('click', function() {
         navMenu.classList.toggle('active');
-        hamburger.classList.toggle('active'); 
+        hamburger.classList.toggle('active');
     });
 
-    // Close mobile menu when clicking on a link
     document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', function() {
             navMenu.classList.remove('active');
@@ -117,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const targetHref = this.getAttribute('href');

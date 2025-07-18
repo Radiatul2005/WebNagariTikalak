@@ -14,6 +14,9 @@ var wilayahRouter = require('./routes/wilayah');
 var apiRouter = require('./routes/api');
 var adminRouter = require('./routes/admin');
 var pendudukRouter = require('./routes/penduduk'); // Tetap import route penduduk
+var jorongRouter = require('./routes/jorong');
+var beritaRouter = require('./routes/berita'); // Tetap import route penduduk
+var beritaPublicRouter = require('./routes/beritaPublic'); 
 
 var app = express();
 
@@ -88,6 +91,9 @@ app.use('/wilayah', wilayahRouter);
 app.use('/api', apiRouter); // Anda bisa menggunakan ini untuk API penduduk atau membuat yang terpisah
 app.use('/admin', adminRouter);
 app.use('/penduduk', pendudukRouter); // Daftarkan route penduduk
+app.use('/jorong', jorongRouter);
+app.use('/berita', beritaRouter); // Daftarkan route berita
+app.use('/berita-public', beritaPublicRouter); // Daftarkan route berita publik
 
 // Health check
 app.get('/health', (req, res) => {

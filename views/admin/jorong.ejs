@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Data Jorong</title>
+    <%- include('../partials/header_admin', { title: 'Dashboard - Data Jorong', currentPage: 'jorong' }) %>
+</head>
+
+<style>
+    .container {
+        flex: 1;
+        padding: 40px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #1e3a8a;
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+    }
+
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .add-jorong-btn {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .add-jorong-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        background: linear-gradient(135deg, #059669, #047857);
+    }
+
+    .add-jorong-btn:active {
+        transform: translateY(0);
+    }
+
+    .plus-icon {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    }
+
+    .jorong-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1rem;
+    }
+
+    .jorong-table thead {
+        background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+        color: white;
+    }
+
+    .jorong-table th {
+        padding: 20px 15px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-bottom: 2px solid #1e3a8a;
+    }
+
+    .jorong-table th:first-child {
+        border-radius: 0;
+    }
+
+    .jorong-table th:last-child {
+        border-radius: 0;
+    }
+
+    .jorong-table tbody tr {
+        transition: background-color 0.3s ease;
+    }
+
+    .jorong-table tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+
+    .jorong-table tbody tr:hover {
+        background-color: #e0f2fe;
+        transform: scale(1.01);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    }
+
+    .jorong-table td {
+        padding: 18px 15px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #374151;
+    }
+
+    .jorong-table td:first-child {
+        font-weight: 600;
+        color: #1e3a8a;
+    }
+
+    .jorong-table td:not(:first-child) {
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .zero-data {
+        color: #9ca3af;
+        font-style: italic;
+    }
+
+    .no-data {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #888;
+        padding: 50px;
+        border: 1px dashed #ccc;
+        border-radius: 8px;
+        background: #f9f9f9;
+    }
+
+    .stats-summary {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid #bae6fd;
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .stat-card h3 {
+        color: #1e3a8a;
+        margin: 0 0 10px 0;
+        font-size: 1.1rem;
+    }
+
+    .stat-card p {
+        color: #3b82f6;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 30px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .modal-title {
+        color: #1e3a8a;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .close {
+        color: #6b7280;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .close:hover {
+        color: #374151;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #374151;
+        font-weight: 500;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #1e3a8a, #1e40af);
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: #6b7280;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #4b5563;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+        
+        .jorong-table th,
+        .jorong-table td {
+            padding: 12px 8px;
+            font-size: 0.9rem;
+        }
+        
+        .stats-summary {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .table-header {
+            flex-direction: column;
+            gap: 15px;
+            align-items: stretch;
+        }
+
+        .add-jorong-btn {
+            justify-content: center;
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="container">
+    <h1>Data Kependudukan per Jorong</h1>
+
+    <% 
+        let dataJorong = typeof jorongData !== 'undefined' ? jorongData : [];
+        let completeJorongData = [];
+        if (dataJorong && dataJorong.length > 0) {
+            completeJorongData = dataJorong.map(jorong => ({
+                namaJorong: jorong.namaJorong || 'Nama Jorong Tidak Tersedia',
+                jumlah_warga: parseInt(jorong.jumlah_warga) || 0,
+                jumlah_keluarga: parseInt(jorong.jumlah_keluarga) || 0,
+                jumlah_penerima_bantuan: parseInt(jorong.jumlah_penerima_bantuan) || 0
+            }));
+        } else {
+            completeJorongData = [];
+        }
+        let totalWarga = 0;
+        let totalKeluarga = 0;
+        let totalPenerima = 0;
+        let totalJorong = completeJorongData.length;
+        completeJorongData.forEach(jorong => {
+            totalWarga += parseInt(jorong.jumlah_warga) || 0;
+            totalKeluarga += parseInt(jorong.jumlah_keluarga) || 0;
+            totalPenerima += parseInt(jorong.jumlah_penerima_bantuan) || 0;
+        });
+    %>
+
+    <div class="stats-summary">
+        <div class="stat-card">
+            <h3>Total Jorong</h3>
+            <p><%= totalJorong.toLocaleString('id-ID') %></p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Warga</h3>
+            <p><%= totalWarga.toLocaleString('id-ID') %></p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Keluarga</h3>
+            <p><%= totalKeluarga.toLocaleString('id-ID') %></p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Penerima Bantuan</h3>
+            <p><%= totalPenerima.toLocaleString('id-ID') %></p>
+        </div>
+    </div>
+
+    <div class="table-header">
+        <div></div>
+        <button class="add-jorong-btn" onclick="openAddJorongModal()">
+            <span class="plus-icon">+</span>
+            Tambah Jorong
+        </button>
+    </div>
+
+    <% if (completeJorongData && completeJorongData.length > 0) { %>
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="jorong-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Jorong</th>
+                            <th>Jumlah Warga</th>
+                            <th>Jumlah Keluarga</th>
+                            <th>Jumlah Penerima Bantuan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% completeJorongData.forEach(jorong => { %>
+                            <tr>
+                                <td><%= jorong.namaJorong || 'Nama Jorong Tidak Tersedia' %></td>
+                                <td class="<%= (parseInt(jorong.jumlah_warga) || 0) === 0 ? 'zero-data' : '' %>">
+                                    <%= (parseInt(jorong.jumlah_warga) || 0).toLocaleString('id-ID') %>
+                                </td>
+                                <td class="<%= (parseInt(jorong.jumlah_keluarga) || 0) === 0 ? 'zero-data' : '' %>">
+                                    <%= (parseInt(jorong.jumlah_keluarga) || 0).toLocaleString('id-ID') %>
+                                </td>
+                                <td class="<%= (parseInt(jorong.jumlah_penerima_bantuan) || 0) === 0 ? 'zero-data' : '' %>">
+                                    <%= (parseInt(jorong.jumlah_penerima_bantuan) || 0).toLocaleString('id-ID') %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="no-data">
+            <p>Belum ada data jorong yang tersedia.</p>
+            <p>Silakan tambah jorong baru menggunakan tombol di atas.</p>
+        </div>
+    <% } %>
+</div>
+
+<div id="addJorongModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Tambah Jorong Baru</h2>
+            <span class="close" onclick="closeAddJorongModal()">&times;</span>
+        </div>
+        <form id="addJorongForm" action="/admin/jorong/add" method="POST">
+            <div class="form-group">
+                <label class="form-label" for="namaJorong">Nama Jorong</label>
+                <input type="text" id="namaJorong" name="namaJorong" class="form-input" 
+                       placeholder="Masukkan nama jorong..." required>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeAddJorongModal()">
+                    Batal
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Tambah Jorong
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openAddJorongModal() {
+    document.getElementById('addJorongModal').style.display = 'block';
+    document.getElementById('namaJorong').focus();
+}
+
+function closeAddJorongModal() {
+    document.getElementById('addJorongModal').style.display = 'none';
+    document.getElementById('addJorongForm').reset();
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('addJorongModal');
+    if (event.target === modal) {
+        closeAddJorongModal();
+    }
+}
+
+document.getElementById('addJorongForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const namaJorong = formData.get('namaJorong').trim();
+    
+    if (!namaJorong) {
+        alert('Nama jorong tidak boleh kosong!');
+        return;
+    }
+    
+    fetch('/admin/jorong/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            namaJorong: namaJorong
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Jorong berhasil ditambahkan!');
+            location.reload();
+        } else {
+            alert('Gagal menambahkan jorong: ' + (data.message || 'Terjadi kesalahan'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat menambahkan jorong');
+    });
+    
+    closeAddJorongModal();
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeAddJorongModal();
+    }
+});
+</script>
+
+</body>
+</html>
