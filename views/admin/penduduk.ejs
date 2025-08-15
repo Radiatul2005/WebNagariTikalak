@@ -6,6 +6,7 @@
     <title><%= title %></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Gaya dasar dan reset */
         * {
             margin: 0;
             padding: 0;
@@ -20,87 +21,153 @@
             overflow-x: hidden;
         }
         .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
+            position: fixed; top: 0; width: 100%; background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px); z-index: 1000; padding: 1rem 0; transition: all 0.3s ease;
         }
         .navbar.scrolled {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.98); box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
         .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
+            max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;
         }
         .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
         .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
+            display: flex; list-style: none; gap: 2rem;
         }
         .nav-menu a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
+            text-decoration: none; color: #333; font-weight: 500; transition: color 0.3s ease; position: relative;
         }
         .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            transition: width 0.3s ease;
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); transition: width 0.3s ease;
         }
-        .nav-menu a:hover::after {
-            width: 100%;
-        }
-        .nav-menu a:hover {
-            color: #1e3a3a;
-        }
+        .nav-menu a:hover::after { width: 100%; }
+        .nav-menu a:hover { color: #1e3a8a; }
         .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
+            display: none; flex-direction: column; cursor: pointer;
         }
         .hamburger span {
-            width: 25px;
-            height: 3px;
-            background: #333;
-            margin: 3px 0;
-            transition: 0.3s;
+            width: 25px; height: 3px; background: #333; margin: 3px 0; transition: 0.3s;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 2.5rem auto;
             padding: 0 2rem;
+            margin-top: 0.05rem;
         }
+        
+        /* Gaya untuk kotak statistik */
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            flex: 1;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .stat-card h4 {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .stat-card .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+        
+        /* Header dengan tombol tambah */
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        
+        .page-header h2 {
+            color: #333;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        /* Mengubah gaya tombol agar seragam */
+        .btn-action {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-tambah::before {
+            content: '+ ';
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+        
         .form-table-container {
             background: white;
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             margin-bottom: 2.5rem;
+            display: none;
+            animation: slideDown 0.3s ease-out;
         }
+        
+        .form-table-container.show {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .form-table-container h3 {
             color: #333;
             margin-bottom: 1.5rem;
@@ -186,6 +253,14 @@
             background: #555;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
+        .btn-cancel {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);
+        }
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
         .btn-edit {
             background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
             box-shadow: 0 5px 15px rgba(243, 156, 18, 0.2);
@@ -202,9 +277,42 @@
             background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
             box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
         }
+        
+        .table-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+        }
+
+        /* FLEXBOX UNTUK HEADER TABEL */
+        .table-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+        }
+
+        .table-actions {
+            margin-top: 1.5rem;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
         .table-responsive {
             overflow-x: auto;
-            margin-top: 2rem;
+            margin-top: 1rem;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
@@ -262,13 +370,56 @@
             color: #155724;
             border: 1px solid #c3e6cb;
         }
+        
+        /* Gaya untuk Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+        .pagination button {
+            background: #fff;
+            color: #3b82f6;
+            border: 1px solid #d1d5db;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .pagination button:hover:not(.active) {
+            background: #e5e7eb;
+        }
+        .pagination button.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            cursor: default;
+        }
+        .pagination button:disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+            border-color: #e5e7eb;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 0 1rem;
                 margin: 1.5rem auto;
             }
-            .form-table-container {
+            .stats-container {
+                flex-direction: column;
+            }
+            .page-header,
+            .form-table-container,
+            .table-container {
                 padding: 1.5rem;
+            }
+            .page-header h2 {
+                font-size: 1.5rem;
             }
             .form-table-container h3 {
                 font-size: 1.3rem;
@@ -293,8 +444,10 @@
     </style>
 </head>
 <body>
+    
     <div class="container">
-        <div class="form-table-container">
+
+        <div class="form-table-container" id="form-container">
             <h3 id="form-title">Tambah Data Penduduk</h3>
             <form id="penduduk-form">
                 <input type="hidden" id="pendudukId" name="pendudukId">
@@ -318,7 +471,7 @@
                     <label for="id_jorong">Jorong:</label>
                     <select id="id_jorong" name="id_jorong" required>
                         <option value="">-- Pilih Jorong --</option>
-                        </select>
+                    </select>
                 </div>
                 <div class="form-group checkbox">
                     <input type="checkbox" id="dapatBantuan" name="dapatBantuan">
@@ -326,11 +479,34 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn">Simpan Data</button>
-                    <button type="button" class="btn btn-secondary" id="reset-form-btn">Reset Form</button> 
+                    <button type="button" class="btn btn-secondary" id="reset-form-btn">Reset Form</button>
+                    <button type="button" class="btn btn-cancel" id="cancel-form-btn">Batal</button>
                 </div>
             </form>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Data Penduduk Nagari Tikalak</h3>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h4>Jumlah Penduduk</h4>
+                    <div class="stat-value" id="jumlah-penduduk">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Jumlah Penerima Bantuan</h4>
+                    <div class="stat-value" id="jumlah-penerima-bantuan">0</div>
+                </div>
+            </div>
+
+            <div class="table-actions">
+                <button type="button" class="btn-action btn-tambah" id="toggle-form-btn">Tambah Penduduk</button>
+                <button type="button" class="btn-action btn-download" id="download-btn">Download Semua Data</button>
+            </div>
+            
             <div class="table-responsive">
-                <h3 style="margin-top: 2rem; margin-bottom: 1rem; text-align: center;">Daftar Penduduk</h3>
                 <table class="penduduk-table">
                     <thead>
                         <tr>
@@ -349,189 +525,368 @@
                     </tbody>
                 </table>
             </div>
-            <div id="penduduk-list"></div> </div>
+            <div class="pagination" id="pagination-container"></div>
+            <div id="penduduk-list"></div>
+        </div>
     </div>
-    <script>
-        let jorongData = [];
-        document.addEventListener('DOMContentLoaded', () => {
-            populateJorongDropdown();
-            fetchPendudukData();
-            document.getElementById('penduduk-form').addEventListener('submit', savePenduduk);
-            document.getElementById('reset-form-btn').addEventListener('click', () => {
-                document.getElementById('penduduk-form').reset();
-                document.getElementById('pendudukId').value = '';
-                document.getElementById('form-title').innerText = 'Tambah Data Penduduk';
-                document.getElementById('id_jorong').value = '';
+
+<script>
+    let jorongData = [];
+    let allPendudukData = [];
+    let currentPage = 1;
+    const rowsPerPage = 50;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        populateJorongDropdown();
+        fetchPendudukData();
+        
+        // Event listeners
+        document.getElementById('penduduk-form').addEventListener('submit', savePenduduk);
+        document.getElementById('toggle-form-btn').addEventListener('click', toggleForm);
+        document.getElementById('reset-form-btn').addEventListener('click', resetForm);
+        document.getElementById('cancel-form-btn').addEventListener('click', hideForm);
+        document.getElementById('download-btn').addEventListener('click', downloadData);
+
+        const navbar = document.querySelector('.navbar');
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (navbar) {
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                });
+            });
+        }
+    });
+
+    function toggleForm() {
+        const formContainer = document.getElementById('form-container');
+        
+        if (formContainer.classList.contains('show')) {
+            hideForm();
+        } else {
+            showForm();
+        }
+    }
+
+    function showForm() {
+        const formContainer = document.getElementById('form-container');
+        formContainer.classList.add('show');
+    }
+
+    function hideForm() {
+        const formContainer = document.getElementById('form-container');
+        formContainer.classList.remove('show');
+        resetForm();
+    }
+
+    function resetForm() {
+        document.getElementById('penduduk-form').reset();
+        document.getElementById('pendudukId').value = '';
+        document.getElementById('form-title').innerText = 'Tambah Data Penduduk';
+        document.getElementById('id_jorong').value = '';
+    }
+
+    function showMessage(message, type = 'info') {
+        const messageDiv = document.getElementById('penduduk-list');
+        messageDiv.innerHTML = `<p class="${type}-message">${message}</p>`;
+        setTimeout(() => {
+            messageDiv.innerHTML = '';
+        }, 5000);
+    }
+
+    async function populateJorongDropdown() {
+        try {
+            const response = await fetch('/penduduk/api/jorong');
+            const data = await response.json();
+
+            if (data.error) {
+                showMessage(`Error memuat data jorong: ${data.error}`, 'error');
+                return;
+            }
+
+            jorongData = data.data;
+            const jorongSelect = document.getElementById('id_jorong');
+            jorongSelect.innerHTML = '<option value="">-- Pilih Jorong --</option>';
+
+            jorongData.forEach(jorong => {
+                const option = document.createElement('option');
+                option.value = jorong.id;
+                option.textContent = jorong.namaJorong;
+                jorongSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error fetching jorong data:", error);
+            showMessage(`Gagal memuat daftar jorong: ${error.message}`, 'error');
+        }
+    }
+
+    async function fetchPendudukData() {
+        try {
+            const response = await fetch('/penduduk/api/penduduk');
+            const data = await response.json();
+
+            if (data.error) {
+                showMessage(`Error: ${data.error}`, 'error');
+                document.getElementById('penduduk-table-body').innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Error memuat data: ${data.error}</td></tr>`;
+                return;
+            }
+
+            allPendudukData = data.data;
+            updateStats();
+            displayPendudukTable();
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            showMessage(`Gagal memuat data: ${error.message}`, 'error');
+            document.getElementById('penduduk-table-body').innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Gagal memuat data: ${error.message}</td></tr>`;
+        }
+    }
+
+    function updateStats() {
+        const totalPenduduk = allPendudukData.length;
+        const penerimaBantuan = allPendudukData.filter(p => p.dapatBantuan === 1 || p.dapatBantuan === true).length;
+        
+        document.getElementById('jumlah-penduduk').innerText = totalPenduduk;
+        document.getElementById('jumlah-penerima-bantuan').innerText = penerimaBantuan;
+    }
+
+    function displayPendudukTable() {
+        const tableBody = document.getElementById('penduduk-table-body');
+        tableBody.innerHTML = '';
+
+        if (!allPendudukData || allPendudukData.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Belum ada data penduduk.</td></tr>`;
+            document.getElementById('pagination-container').innerHTML = '';
+            return;
+        }
+
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const paginatedData = allPendudukData.slice(startIndex, endIndex);
+
+        let no = startIndex + 1;
+        paginatedData.forEach(penduduk => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${no++}</td>
+                <td>${penduduk.nama || ''}</td>
+                <td>${penduduk.nik || ''}</td>
+                <td>${penduduk.tanggalLahir ? new Date(penduduk.tanggalLahir).toISOString().split('T')[0] : ''}</td>
+                <td>${penduduk.alamat || ''}</td>
+                <td>${penduduk.namaJorong || ''}</td>
+                <td>${(penduduk.dapatBantuan === 1 || penduduk.dapatBantuan === true) ? 'Ya' : 'Tidak'}</td>
+                <td>
+                    <button class="btn btn-edit"
+                        data-id="${penduduk.id}"
+                        data-nama="${penduduk.nama || ''}"
+                        data-nik="${penduduk.nik || ''}"
+                        data-tanggallahir="${penduduk.tanggalLahir ? new Date(penduduk.tanggalLahir).toISOString().split('T')[0] : ''}"
+                        data-alamat="${penduduk.alamat || ''}"
+                        data-idjorong="${penduduk.id_jorong || ''}"
+                        data-dapatbantuan="${penduduk.dapatBantuan}">
+                        Edit
+                    </button>
+                    <button class="btn btn-delete" data-id="${penduduk.id}">Hapus</button>
+                </td>
+            `;
+        });
+
+        document.querySelectorAll('.btn-edit').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const data = e.target.dataset;
+                editPenduduk(
+                    data.id,
+                    data.nama,
+                    data.nik,
+                    data.tanggallahir,
+                    data.alamat,
+                    data.idjorong,
+                    data.dapatbantuan
+                );
             });
         });
-        function showMessage(message, type = 'info') {
-            const messageDiv = document.getElementById('penduduk-list');
-            messageDiv.innerHTML = `<p class="${type}-message">${message}</p>`;
-            setTimeout(() => {
-                messageDiv.innerHTML = '';
-            }, 5000);
-        }
-        async function populateJorongDropdown() {
-            try {
-                const response = await fetch('/penduduk/api/jorong');
-                const data = await response.json();
-                if (data.error) {
-                    showMessage(`Error memuat data jorong: ${data.error}`, 'error');
-                    return;
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', (e) => {
+                deletePenduduk(e.target.dataset.id);
+            });
+        });
+
+        setupPagination();
+    }
+
+    function setupPagination() {
+        const paginationContainer = document.getElementById('pagination-container');
+        paginationContainer.innerHTML = '';
+        const totalPages = Math.ceil(allPendudukData.length / rowsPerPage);
+
+        if (totalPages > 1) {
+            const prevButton = document.createElement('button');
+            prevButton.innerText = 'Sebelumnya';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayPendudukTable();
                 }
-                jorongData = data.data;
-                const jorongSelect = document.getElementById('id_jorong');
-                jorongSelect.innerHTML = '<option value="">-- Pilih Jorong --</option>';
-                jorongData.forEach(jorong => {
-                    const option = document.createElement('option');
-                    option.value = jorong.id;
-                    option.textContent = jorong.namaJorong;
-                    jorongSelect.appendChild(option);
+            });
+            paginationContainer.appendChild(prevButton);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.innerText = i;
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    displayPendudukTable();
                 });
-            } catch (error) {
-                console.error("Error fetching jorong data:", error);
-                showMessage(`Gagal memuat daftar jorong: ${error.message}`, 'error');
+                paginationContainer.appendChild(pageButton);
             }
-        }
-        async function fetchPendudukData() {
-            try {
-                const response = await fetch('/penduduk/api/penduduk');
-                const data = await response.json();
-                const tableBody = document.getElementById('penduduk-table-body');
-                tableBody.innerHTML = '';
-                if (data.error) {
-                    showMessage(`Error: ${data.error}`, 'error');
-                    tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Error memuat data: ${data.error}</td></tr>`;
-                    return;
+
+            const nextButton = document.createElement('button');
+            nextButton.innerText = 'Selanjutnya';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayPendudukTable();
                 }
-                if (data.data && data.data.length > 0) {
-                    let no = 1;
-                    data.data.forEach(penduduk => {
-                        const row = tableBody.insertRow();
-                        row.innerHTML = `
-                            <td>${no++}</td>
-                            <td>${penduduk.nama || ''}</td>
-                            <td>${penduduk.nik || ''}</td>
-                            <td>${penduduk.tanggalLahir ? new Date(penduduk.tanggalLahir).toISOString().split('T')[0] : ''}</td>
-                            <td>${penduduk.alamat || ''}</td>
-                            <td>${penduduk.namaJorong || ''}</td> <td>${(penduduk.dapatBantuan === 1 || penduduk.dapatBantuan === true) ? 'Ya' : 'Tidak'}</td>
-                            <td>
-                                <button class="btn btn-edit" 
-                                    data-id="${penduduk.id}" 
-                                    data-nama="${penduduk.nama || ''}" 
-                                    data-nik="${penduduk.nik || ''}" 
-                                    data-tanggallahir="${penduduk.tanggalLahir ? new Date(penduduk.tanggalLahir).toISOString().split('T')[0] : ''}" 
-                                    data-alamat="${penduduk.alamat || ''}" 
-                                    data-idjorong="${penduduk.id_jorong || ''}" 
-                                    data-dapatbantuan="${penduduk.dapatBantuan}">
-                                    Edit
-                                </button>
-                                <button class="btn btn-delete" data-id="${penduduk.id}">Hapus</button>
-                            </td>
-                        `;
-                    });
-                    document.querySelectorAll('.btn-edit').forEach(button => {
-                        button.addEventListener('click', (e) => {
-                            const data = e.target.dataset;
-                            editPenduduk(
-                                data.id, 
-                                data.nama, 
-                                data.nik, 
-                                data.tanggallahir, 
-                                data.alamat, 
-                                data.idjorong,
-                                data.dapatbantuan == '1' || data.dapatbantuan === 'true' 
-                            );
-                        });
-                    });
-                    document.querySelectorAll('.btn-delete').forEach(button => {
-                        button.addEventListener('click', (e) => {
-                            deletePenduduk(e.target.dataset.id);
-                        });
-                    });
-                } else {
-                    tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Belum ada data penduduk.</td></tr>`;
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                showMessage(`Gagal memuat data: ${error.message}`, 'error');
-                const tableBody = document.getElementById('penduduk-table-body');
-                tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 20px;">Gagal memuat data: ${error.message}</td></tr>`;
-            }
+            });
+            paginationContainer.appendChild(nextButton);
         }
-        async function savePenduduk(event) {
-            event.preventDefault();
-            const form = event.target;
-            const id = form.pendudukId.value;
-            const nama = form.nama.value;
-            const nik = form.nik.value;
-            const tanggalLahir = form.tanggalLahir.value;
-            const alamat = form.alamat.value;
-            const id_jorong = form.id_jorong.value;
-            const dapatBantuan = form.dapatBantuan.checked;
-            const selectedJorong = jorongData.find(j => j.id == id_jorong);
-            const jorongNama = selectedJorong ? selectedJorong.namaJorong : '';
-            const pendudukData = { nama, nik, tanggalLahir, alamat, id_jorong, jorong: jorongNama, dapatBantuan };
-            let url = '/penduduk/api/penduduk';
-            let method = 'POST';
-            if (id) {
-                url = `/penduduk/api/penduduk/${id}`;
-                method = 'PUT';
+    }
+
+    async function savePenduduk(event) {
+        event.preventDefault();
+        const form = event.target;
+        const id = form.pendudukId.value;
+        const nama = form.nama.value;
+        const nik = form.nik.value;
+        const tanggalLahir = form.tanggalLahir.value;
+        const alamat = form.alamat.value;
+        const id_jorong = form.id_jorong.value;
+        const dapatBantuan = form.dapatBantuan.checked;
+
+        const pendudukData = { nama, nik, tanggalLahir, alamat, id_jorong, dapatBantuan };
+
+        let url = '/penduduk/api/penduduk';
+        let method = 'POST';
+        if (id) {
+            url = `/penduduk/api/penduduk/${id}`;
+            method = 'PUT';
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pendudukData)
+            });
+            const result = await response.json();
+
+            if (response.ok) {
+                showMessage(result.message, 'info');
+                hideForm();
+                fetchPendudukData();
+            } else {
+                showMessage(`Error: ${result.error || result.message}`, 'error');
             }
+        } catch (e) {
+            console.error("Error saving document: ", e);
+            showMessage("Gagal menyimpan data: " + e.message, 'error');
+        }
+    }
+
+    function editPenduduk(id, nama, nik, tanggalLahir, alamat, id_jorong, dapatBantuan) {
+        showForm();
+        const form = document.getElementById('penduduk-form');
+        form.pendudukId.value = id;
+        form.nama.value = nama;
+        form.nik.value = nik;
+        form.tanggalLahir.value = tanggalLahir;
+        form.alamat.value = alamat;
+        form.id_jorong.value = id_jorong;
+        form.dapatBantuan.checked = (dapatBantuan === 'true' || dapatBantuan === '1' || dapatBantuan === true);
+        document.getElementById('form-title').innerText = 'Edit Data Penduduk (ID: ' + id + ')';
+    }
+
+    async function deletePenduduk(id) {
+        if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
             try {
-                const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(pendudukData)
+                const response = await fetch(`/penduduk/api/penduduk/${id}`, {
+                    method: 'DELETE'
                 });
                 const result = await response.json();
+
                 if (response.ok) {
                     showMessage(result.message, 'info');
-                    form.reset(); 
-                    form.pendudukId.value = ''; 
-                    document.getElementById('form-title').innerText = 'Tambah Data Penduduk';
-                    document.getElementById('id_jorong').value = '';
                     fetchPendudukData();
                 } else {
                     showMessage(`Error: ${result.error || result.message}`, 'error');
                 }
             } catch (e) {
-                console.error("Error saving document: ", e);
-                showMessage("Gagal menyimpan data: " + e.message, 'error');
+                console.error("Error deleting document: ", e);
+                showMessage("Gagal menghapus data: " + e.message, 'error');
             }
         }
-        function editPenduduk(id, nama, nik, tanggalLahir, alamat, id_jorong, dapatBantuan) {
-            const form = document.getElementById('penduduk-form');
-            form.pendudukId.value = id;
-            form.nama.value = nama;
-            form.nik.value = nik;
-            form.tanggalLahir.value = tanggalLahir;
-            form.alamat.value = alamat;
-            form.id_jorong.value = id_jorong;
-            form.dapatBantuan.checked = (dapatBantuan === true || dapatBantuan === 'true' || dapatBantuan === 1 || dapatBantuan === '1');
-            document.getElementById('form-title').innerText = 'Edit Data Penduduk (ID: ' + id + ')';
+    }
+
+    function downloadData() {
+        if (allPendudukData.length === 0) {
+            alert("Tidak ada data untuk diunduh.");
+            return;
         }
-        async function deletePenduduk(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                try {
-                    const response = await fetch(`/penduduk/api/penduduk/${id}`, {
-                        method: 'DELETE'
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                        showMessage(result.message, 'info');
-                        fetchPendudukData();
-                    } else {
-                        showMessage(`Error: ${result.error || result.message}`, 'error');
-                    }
-                } catch (e) {
-                    console.error("Error deleting document: ", e);
-                    showMessage("Gagal menghapus data: " + e.message, 'error');
-                }
-            }
-        }
-    </script>
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        
+        // Buat header CSV
+        const headers = ["No", "Nama", "NIK", "Tanggal Lahir", "Alamat", "Jorong", "Menerima Bantuan"];
+        csvContent += headers.join(",") + "\r\n";
+        
+        // Tambahkan data
+        allPendudukData.forEach((row, index) => {
+            const jorongName = jorongData.find(j => j.id === row.id_jorong)?.namaJorong || '';
+            const dapatBantuanText = (row.dapatBantuan === 1 || row.dapatBantuan === true) ? 'Ya' : 'Tidak';
+            const rowData = [
+                index + 1,
+                `"${row.nama.replace(/"/g, '""')}"`,
+                `"${row.nik.replace(/"/g, '""')}"`,
+                `"${row.tanggalLahir ? new Date(row.tanggalLahir).toISOString().split('T')[0] : ''}"`,
+                `"${row.alamat.replace(/"/g, '""')}"`,
+                `"${jorongName.replace(/"/g, '""')}"`,
+                dapatBantuanText
+            ];
+            csvContent += rowData.join(",") + "\r\n";
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "data_penduduk.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+</script>
 </body>
 </html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SELAMAT DATANG DI UMKM NAGARI TIKALAK</title>
+    <style>
+        /* CSS Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lucida Bright', 'Times New roman', 'Segoe UI', Tahoma, Geneva, sans-serif;
+        }
+        
+        /* Background luar biru */
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Lucida Bright', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;   
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            width: 100%;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: #1e3a8a;
+        }
+        
+        .nav-menu {
+            display: none;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: #1e3a8a;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background:linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 2rem;
+            width: 100%;
+            margin-bottom: 0;
+        }
+        
+        .hero h1 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #ff6600;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            transition: background 0.3s;
+        }
+        
+        .cta-button:hover {
+            background: #e65c00;
+        }
+        
+        .section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: #0066cc;
+            margin-bottom: 3rem;
+        }
+        
+        /* Container utama untuk mengatur kotak */
+        .hero .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; 
+            justify-content: center;
+            flex-shrink: 0;
+            padding: 20px;
+        }
+        
+        .product {
+            width: 300px;
+            margin: 20px;
+            padding: 10px;
+            color: #333;
+        }
+        
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .product h2 {
+            margin: 10px 0;
+        }
+        
+        .product p {
+            color: #F4C366;
+        }
+        
+        .product form {
+            display: inline-block;
+        }
+        
+        .product input {
+            margin-bottom: 10px;
+        }
+        
+        /* Container kotak dengan border */
+        .kedai-container {
+            border: 5px solid #CED4DA;
+            border-radius: 15px;
+            padding: 20px;
+            background-color: #FFF5E6;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .kedai-container img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        /* Judul kedai */
+        h1.judul-kedai {
+            color: #0080ff;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        
+        /* Tombol lihat */
+        .tombol-lihat {
+            display: inline-block;
+            background-color: #0080ff;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid #CED4DA;
+            cursor: pointer;
+        }
+        
+        .tombol-lihat:hover {
+            background-color: #0080ff;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+        }
+        
+        .footer {
+            background: #333;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigasi -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">SELAMAT DATANG DI UMKM NAGARI TIKALAK</div>
+                <img src="/images/ilustrasi1.png" alt="Logo" width="400" height="150">
+                <ul class="nav-menu">
+                </ul>
+            </nav>
+        </div>
+    </header>
+	
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>UMKM Nagari Tikalak</h1>
+        <p>Nagari Tikalak merupakan sentra UMKM unggulan yang mengolah ikan bilih <i>(Mystacoleucus padangensis)</i> yaitu spesies endemik yang hanya hidup di Danau Singkarak. Ikan kecil ini menjadi tulang punggung perekonomian lokal, diolah secara tradisional menjadi produk bernilai tinggi.</p>
+        <br>
+        <p>Beberapa diantara UMKM yang ada di Nagari Tikalak :</p>
+        <br>
+        <p style="font-style: italic; color: #C9CDCF;">UMKM began as small businesses operated from home since 2017. By processing the snail sourced directly from Lake Singkarak and the bilih fish purchased from the market, this UMKM sells various product variants such as pensi, batiah, crispy bilih, peyek, and dendeng rinuak</p>
+        <br>
+        <p style="font-style: italic; color: #C9CDCF;">Some of the UMKM (Micro, Small, and Medium Enterprises) in Nagari Tikalak are:</p>
+
+        <div class="container">
+            <div class="product">
+                <div class="kedai-container">
+                    <img src="/images/yance1.jpg" alt="Yance1">
+                    <br>
+                    <h1 class="judul-kedai" style="font-size: 22px;">Kedai Yance Cihuy</h1>
+                    <form action="/yance" method="GET">
+                        <button type='submit' name='lihat' href="#" class="tombol-lihat">Lihat</button>
+                    </form>
+                </div>
+            </div>
+	
+            <div class="product">
+                <div class="kedai-container">
+                    <img src="/images/makcik2.png" alt="warung2">
+                    <br>
+                    <h1 class="judul-kedai" style="font-size: 22px;">Ikan Bilih Goreng Kulimin Mak Cik</h1>
+                    <form action="/makcik" method="GET">
+                        <button type='submit' name='lihat' href="#" class="tombol-lihat">Lihat</button>
+                    </form>
+                </div>
+            </div>
+	
+            <div class="product">
+                <div class="kedai-container">
+                    <img src="/images/kakmia6.jpg" alt="warung4">
+                    <h1 class="judul-kedai">Kak Mia</h1>
+                    <form action="/kakmia" method="GET">
+                        <button type='submit' name='lihat' href="#" class="tombol-lihat">Lihat</button>
+                    </form>
+                </div>
+            </div>
+	
+            <div class="product">
+                <div class="kedai-container">
+                    <img src="/images/kaklolie6.jpg" alt="warung5">
+                    <h1 class="judul-kedai">Lolie snack</h1>
+                    <form action="/lolie" method="GET">
+                        <button type='submit' name='lihat' href="#" class="tombol-lihat">Lihat</button>
+                    </form>
+                </div>
+            </div>
+		
+            <div class="product">
+                <div class="kedai-container">
+                    <img src="/images/bunda2.jpg" alt="warung3">
+                    <h1 class="judul-kedai">Warung Bunda</h1>
+                    <form action="/bunda" method="GET">
+                        <button type='submit' name='lihat' href="#" class="tombol-lihat">Lihat</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <%= new Date().getFullYear() %> UMKM Nagari Tikalak. Hak Cipta Dilindungi.</p>
+            <br><p>Alamat: Nagari Tikalak, Kec.X Koto Singkarak, Kabupaten Solok</p>
+        </div>
+    </footer>
+</body>
+</html>

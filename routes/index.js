@@ -1,59 +1,167 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database'); // Make sure this path is correct for your DB connection!
+const db = require('../database');
+const fs = require('fs');
+const path = require('path');
 
-// This route serves your root URL (e.g., '/') and renders the dashboard.
+function validateAndCleanPhotoPath(rawFoto, defaultFoto = null) {
+    if (!rawFoto) return defaultFoto;
+    let cleanFoto = rawFoto.replace(/^https?:\/\//, '');
+    cleanFoto = cleanFoto.replace(/^\/uploads\//, '').replace(/^uploads\//, '').replace(/^\//, '');
+    const fullPath = path.join(__dirname, '..', 'public', 'uploads', cleanFoto);
+    if (fs.existsSync(fullPath)) {
+        return cleanFoto;
+    } else {
+        return defaultFoto ? defaultFoto.replace(/^\/uploads\//, '').replace(/^uploads\//, '') : null;
+    }
+}
+
 router.get('/', async (req, res) => {
     try {
-        // Fetch perangkat_nagari data
-        const [perangkat_nagari] = await db.query("SELECT * FROM perangkat_nagari");
-
-        // Fetch published news data for the dashboard
-        // Select original column names: id, judul, isi_berita, gambar, tanggal_dibuat, author
-        const [berita] = await db.query( // Renamed variable from 'news' to 'berita'
+        const [allData] = await db.query("SELECT * FROM perangkat_nagari");
+        const [waliNagariData] = await db.query("SELECT nama, jabatan FROM perangkat_nagari WHERE jabatan = 'Wali Nagari' LIMIT 1");
+        let strukturOrganisasiData = [];
+        [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE nama = 'Struktur Organisasi' LIMIT 1");
+        if (strukturOrganisasiData.length === 0) {
+            [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE LOWER(nama) LIKE '%struktur%' OR LOWER(nama) LIKE '%organisasi%' LIMIT 1");
+        }
+        if (strukturOrganisasiData.length === 0) {
+            [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE LOWER(jabatan) LIKE '%struktur%' OR LOWER(jabatan) LIKE '%organisasi%' LIMIT 1");
+        }
+        if (strukturOrganisasiData.length === 0) {
+            [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE foto IS NOT NULL AND foto != '' AND jabatan != 'Wali Nagari' LIMIT 1");
+        }
+        if (strukturOrganisasiData.length === 0) {
+            [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE id = 2 LIMIT 1");
+        }
+        const [berita] = await db.query(
             `SELECT id, judul, isi_berita, gambar, tanggal_dibuat, author
-             FROM berita
-             WHERE status = 'published'
-             ORDER BY tanggal_dibuat DESC
-             LIMIT 5` // Get the 5 most recent published news articles
+            FROM berita
+            WHERE status = 'published'
+            ORDER BY tanggal_dibuat DESC
+            LIMIT 5`
         );
-
+        const waliNagari = waliNagariData.length > 0 ? { 
+            ...waliNagariData[0], 
+            foto: 'uploads/wali-nagari.jpg' 
+        } : null;
+        let strukturOrganisasi = null;
+        if (strukturOrganisasiData.length > 0) {
+            let fotoPath = strukturOrganisasiData[0].foto;
+            if (fotoPath) {
+                let cleanedPath = fotoPath.replace(/^\/uploads\//, '').replace(/^uploads\//, '').replace(/^\//, '');
+                const fullPath = path.join(__dirname, '..', 'public', 'uploads', cleanedPath);
+                if (fs.existsSync(fullPath)) {
+                    strukturOrganisasi = {
+                        ...strukturOrganisasiData[0],
+                        foto: `uploads/${cleanedPath}`
+                    };
+                } else {
+                    const defaultPath = path.join(__dirname, '..', 'public', 'default-struktur.jpg');
+                    if (fs.existsSync(defaultPath)) {
+                        strukturOrganisasi = {
+                            ...strukturOrganisasiData[0],
+                            foto: 'default-struktur.jpg'
+                        };
+                    } else {
+                        strukturOrganisasi = {
+                            ...strukturOrganisasiData[0],
+                            foto: null
+                        };
+                    }
+                }
+            } else {
+                strukturOrganisasi = {
+                    ...strukturOrganisasiData[0],
+                    foto: null
+                };
+            }
+        }
         res.render('users/dashboard', {
-            perangkat_nagari: perangkat_nagari,
-            berita: berita // Passed as 'berita' to match EJS expectation
+            waliNagari: waliNagari,
+            strukturOrganisasi: strukturOrganisasi,
+            berita: berita 
         });
     } catch (err) {
-        console.error("Error on '/' route:", err);
-        // Provide fallback empty arrays for robustness
-        res.status(500).render('users/dashboard', { perangkat_nagari: [], berita: [], error: 'Failed to load data.' });
+        res.status(500).render('users/dashboard', { 
+            waliNagari: null, 
+            strukturOrganisasi: null, 
+            berita: [], 
+            error: 'Failed to load data.' 
+        });
     }
 });
 
-// This route specifically handles '/users/dashboard'.
-// It's good practice to have this if users might directly navigate to /users/dashboard.
 router.get('/users/dashboard', async (req, res) => {
     try {
-        // Fetch perangkat_nagari data
-        const [perangkat_nagari] = await db.query("SELECT * FROM perangkat_nagari");
-
-        // Fetch published news data for the dashboard
-        // Select original column names: id, judul, isi_berita, gambar, tanggal_dibuat, author
-        const [berita] = await db.query( // Renamed variable from 'news' to 'berita'
+        const [waliNagariData] = await db.query("SELECT nama, jabatan FROM perangkat_nagari WHERE jabatan = 'Wali Nagari' LIMIT 1");
+        const [allData] = await db.query("SELECT * FROM perangkat_nagari");
+        let strukturOrganisasiData;
+        [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE nama = 'Struktur Organisasi' LIMIT 1");
+        if (strukturOrganisasiData.length === 0) {
+            [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE nama LIKE '%struktur%' OR nama LIKE '%organisasi%' LIMIT 1");
+        }
+        if (strukturOrganisasiData.length === 0) {
+            [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE jabatan LIKE '%struktur%' OR jabatan LIKE '%organisasi%' LIMIT 1");
+        }
+        if (strukturOrganisasiData.length === 0) {
+            [strukturOrganisasiData] = await db.query("SELECT nama, foto FROM perangkat_nagari WHERE foto IS NOT NULL AND foto != '' AND jabatan != 'Wali Nagari' LIMIT 1");
+        }
+        const [berita] = await db.query(
             `SELECT id, judul, isi_berita, gambar, tanggal_dibuat, author
-             FROM berita
-             WHERE status = 'published'
-             ORDER BY tanggal_dibuat DESC
-             LIMIT 5`
+            FROM berita
+            WHERE status = 'published'
+            ORDER BY tanggal_dibuat DESC
+            LIMIT 5`
         );
-
+        const waliNagari = waliNagariData.length > 0 ? { 
+            ...waliNagariData[0], 
+            foto: 'uploads/wali-nagari.jpg' 
+        } : null;
+        let strukturOrganisasi = null;
+        if (strukturOrganisasiData.length > 0) {
+            let fotoPath = strukturOrganisasiData[0].foto;
+            if (fotoPath) {
+                let cleanedPath = fotoPath.replace(/^\/uploads\//, '').replace(/^uploads\//, '').replace(/^\//, '');
+                const fullPath = path.join(__dirname, '..', 'public', 'uploads', cleanedPath);
+                if (fs.existsSync(fullPath)) {
+                    strukturOrganisasi = {
+                        ...strukturOrganisasiData[0],
+                        foto: `uploads/${cleanedPath}`
+                    };
+                } else {
+                    const defaultPath = path.join(__dirname, '..', 'public', 'default-struktur.jpg');
+                    if (fs.existsSync(defaultPath)) {
+                        strukturOrganisasi = {
+                            ...strukturOrganisasiData[0],
+                            foto: 'default-struktur.jpg'
+                        };
+                    } else {
+                        strukturOrganisasi = {
+                            ...strukturOrganisasiData[0],
+                            foto: null
+                        };
+                    }
+                }
+            } else {
+                strukturOrganisasi = {
+                    ...strukturOrganisasiData[0],
+                    foto: null
+                };
+            }
+        }
         res.render('users/dashboard', {
-            perangkat_nagari: perangkat_nagari,
-            berita: berita // Passed as 'berita' to match EJS expectation
+            waliNagari: waliNagari,
+            strukturOrganisasi: strukturOrganisasi,
+            berita: berita 
         });
     } catch (err) {
-        console.error("Error on '/users/dashboard' route:", err);
-        // Provide fallback empty arrays for robustness
-        res.status(500).render('users/dashboard', { perangkat_nagari: [], berita: [], error: 'Failed to load data.' });
+        res.status(500).render('users/dashboard', { 
+            waliNagari: null, 
+            strukturOrganisasi: null, 
+            berita: [], 
+            error: 'Failed to load data.' 
+        });
     }
 });
 

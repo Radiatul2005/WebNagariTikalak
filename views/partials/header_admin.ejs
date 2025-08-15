@@ -1,252 +1,259 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title><%= title %></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%= title %></title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f8f9fa;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Mengunci gulir pada body */
+        }
 
-    .header {
-      background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-      color: white;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      width: 100%;
-    }
+        .header {
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            position: fixed; /* Header tetap di posisi atas */
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
 
-    .header h1 {
-      font-size: 28px;
-      font-weight: 700;
-    }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color:white;
+        }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
-    .header-icons {
-      display: flex;
-      gap: 15px;
-    }
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
 
-    .header-icon {
-      padding: 8px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 8px;
-    }
+        .header-icon {
+            padding: 8px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+        }
 
-    .admin-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .admin-avatar {
-      width: 35px;
-      height: 35px;
-      background: #2563eb;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
+        .admin-avatar {
+            width: 35px;
+            height: 35px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
 
-    .main-wrapper {
-      display: flex;
-      flex-grow: 1;
-    }
+        .main-wrapper {
+            display: flex;
+            flex-grow: 1;
+            padding-top: 68px; /* Memberi ruang di bawah header yang fixed */
+        }
 
-    .sidebar {
-      width: 280px;
-      background: linear-gradient(180deg, #1e293b 0%, #1e40af 100%);
-      color: white;
-      height: 100vh;
-      overflow-y: auto;
-    }
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1e293b 0%, #1e40af 100%);
+            color: white;
+            position: fixed; /* Sidebar tetap di posisi kiri */
+            top: 68px; /* Posisikan di bawah header */
+            left: 0;
+            height: calc(100vh - 68px); /* Tinggi sisa layar */
+            overflow-y: auto; /* Aktifkan scroll di sidebar jika kontennya panjang */
+            z-index: 999;
+        }
 
-    .sidebar-header {
-      padding: 25px;
-      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
+        .sidebar-header {
+            padding: 25px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
 
-    .sidebar-logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-    .logo-icon {
-      width: 45px;
-      height: 45px;
-      background: #2563eb;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 18px;
-    }
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: #2563eb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
 
-    .sidebar-title {
-      font-size: 16px;
-      font-weight: 600;
-    }
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
 
-    .sidebar-subtitle {
-      font-size: 12px;
-      opacity: 0.8;
-      margin-top: 2px;
-    }
+        .sidebar-subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
 
-    .menu-section {
-      padding: 20px 0;
-    }
+        .menu-section {
+            padding: 20px 0;
+        }
 
-    .menu-title {
-      padding: 0 25px 15px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #a5b4fc;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+        .menu-title {
+            padding: 0 25px 15px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #a5b4fc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-    .menu-item {
-      padding: 12px 25px;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-left: 3px solid transparent;
-    }
+        .menu-item {
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid transparent;
+        }
 
-    .menu-item:hover {
-      background: rgba(59, 130, 246, 0.15);
-      border-left-color: #3b82f6;
-    }
+        .menu-item:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-left-color: #3b82f6;
+        }
 
-    .menu-item.active {
-      background: rgba(59, 130, 246, 0.25);
-      border-left-color: #3b82f6;
-      color: #fff;
-    }
+        .menu-item.active {
+            background: rgba(59, 130, 246, 0.25);
+            border-left-color: #3b82f6;
+            color: #fff;
+        }
 
-    .menu-item a {
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      align-items: center;
-      flex-grow: 1;
-    }
+        .menu-item a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
 
-    .menu-icon {
-      width: 18px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
+        .menu-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-content-area {
+            flex-grow: 1;
+            margin-left: 280px; /* Memberi ruang untuk sidebar */
+            padding: 20px;
+            overflow-y: auto; /* Memungkinkan gulir hanya pada konten utama */
+            height: calc(100vh - 68px); /* Mengisi sisa tinggi layar */
+        }
+    </style>
 </head>
 <body>
-  <!-- Header atas -->
-  <div class="header">
-    <h1>OpenSID</h1>
-    <div class="header-right">
-      <div class="header-icons">
-        <div class="header-icon">🖨️</div>
-        <div class="header-icon">💬</div>
-        <div class="header-icon">📧</div>
-      </div>
-      <div class="admin-info">
-        <div class="admin-avatar">👤</div>
-        <span>Administrator</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Wrapper sidebar dan isi -->
-  <div class="main-wrapper">
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-logo">
-          <div class="logo-icon">🏛️</div>
-          <div>
-            <div class="sidebar-title">Nagari Tikalak</div>
-            <div class="sidebar-subtitle">Kecamatan X Koto Singkarak<br>Kabupaten Solok</div>
-          </div>
+    <div class="header">
+        <h1>Nagari Tikalak</h1>
+        <div class="header-right">
+            <div class="admin-info">
+                <div class="admin-avatar">👤</div>
+                <span>Administrator</span>
+            </div>
         </div>
-      </div>
-
-      <div class="menu-section">
-        <div class="menu-title">Menu Utama</div>
-
-        <div class="menu-item <%= currentPage === 'home' ? 'active' : '' %>">
-          <div class="menu-icon">🏠</div>
-          <a href="/"><span>Home</span></a>
-        </div>
-
-        <div class="menu-item <%= currentPage === 'info_desa' ? 'active' : '' %>">
-          <div class="menu-icon">ℹ️</div>
-          <a href="/berita"><span>Info Desa</span></a>
-        </div>
-
-        <div class="menu-item <%= currentPage === 'penduduk' ? 'active' : '' %>">
-          <div class="menu-icon">👥</div>
-          <a href="/penduduk"><span>Data Penduduk</span></a>
-        </div>
-
-        <div class="menu-item <%= currentPage === 'statistik' ? 'active' : '' %>">
-          <div class="menu-icon">📊</div>
-          <a href="/statistik"><span>Statistik</span></a>
-        </div>
-
-        <div class="menu-item <%= currentPage === 'bantuan' ? 'active' : '' %>">
-          <div class="menu-icon">🎁</div>
-          <a href="/bantuan"><span>Bantuan</span></a>
-        </div>
-
-        <div class="menu-item <%= currentPage === 'pertanian' ? 'active' : '' %>">
-          <div class="menu-icon">🌾</div>
-          <a href="/pertanian"><span>Pertanian</span></a>
-        </div>
-
-        <div class="menu-item <%= currentPage === 'umkm' ? 'active' : '' %>">
-          <div class="menu-icon">🏗️</div>
-          <a href="/umkm"><span>UMKM</span></a>
-        </div>
-
-        <div class="menu-item <%= currentPage === 'pemetaan' ? 'active' : '' %>">
-          <div class="menu-icon">🗺️</div>
-          <a href="/pemetaan"><span>Pemetaan</span></a>
-        </div>
-
-        <div class="menu-item <%= currentPage === 'jorong' ? 'active' : '' %>">
-          <div class="menu-icon">🏘️</div>
-          <a href="/wilayah"><span>Data Jorong</span></a>
-        </div>
-      </div>
     </div>
 
+    <div class="main-wrapper">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">🏛️</div>
+                    <div>
+                        <div class="sidebar-title">Nagari Tikalak</div>
+                        <div class="sidebar-subtitle">Kecamatan X Koto Singkarak<br>Kabupaten Solok</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">Menu Utama</div>
+
+                <div class="menu-item <%= currentPage === 'home' ? 'active' : '' %>">
+                    <div class="menu-icon">🏠</div>
+                    <a href="admin/dashboard"><span>Home</span></a>
+                </div>
+
+                <div class="menu-item <%= currentPage === 'info_desa' ? 'active' : '' %>">
+                    <div class="menu-icon">ℹ️</div>
+                    <a href="/berita"><span>Info Desa</span></a>
+                </div>
+
+                <div class="menu-item <%= currentPage === 'penduduk' ? 'active' : '' %>">
+                    <div class="menu-icon">👥</div>
+                    <a href="/penduduk"><span>Data Penduduk</span></a>
+                </div>
+
+                <div class="menu-item <%= currentPage === 'pertanian' ? 'active' : '' %>">
+                    <div class="menu-icon">🌾</div>
+                    <a href="/kelompoktani"><span>Pertanian</span></a>
+                </div>
+
+                <div class="menu-item <%= currentPage === 'pertanian' ? 'active' : '' %>">
+                    <div class="menu-icon">🐐</div>
+                    <a href="/kelompokternak"><span>Pertenakan</span></a>
+                </div>
+
+                <div class="menu-item <%= currentPage === 'potensi' ? 'active' : '' %>">
+                    <div class="menu-icon">🏗️</div>
+                    <a href="/potensi"><span>Destinasi</span></a>
+                </div>
+
+                <div class="menu-item <%= currentPage === 'jorong' ? 'active' : '' %>">
+                    <div class="menu-icon">🏘️</div>
+                    <a href="/jorong"><span>Data Jorong</span></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content-area">
+            </div>
+    </div>
+</body>
+</html>

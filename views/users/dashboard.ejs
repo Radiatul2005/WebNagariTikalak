@@ -6,7 +6,11 @@
     <title>Nagari Tikalak</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -78,8 +82,12 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             transition: width 0.3s ease;
         }
-        .nav-menu a:hover::after { width: 100%; }
-        .nav-menu a:hover { color: #1e3a8a; }
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        .nav-menu a:hover {
+            color: #1e3a8a;
+        }
         .hamburger {
             display: none;
             flex-direction: column;
@@ -97,14 +105,18 @@
             border-radius: 2px;
             transition: all 0.3s ease;
         }
-        .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
         .hero {
             height: 100vh;
-            background:
-            linear-gradient(135deg, rgba(30, 58, 138, 0.85), rgba(59, 130, 246, 0.85)),
-            url("https://tse3.mm.bing.net/th/id/OIP.wC4AYgM4wxdutbD30i6I6gHaEV?rs=1&pid=ImgDetMain&o=7&rm=3");
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.85), rgba(59, 130, 246, 0.85)), url("https://tse3.mm.bing.net/th/id/OIP.wC4AYgM4wxdutbD30i6I6gHaEV?rs=1&pid=ImgDetMain&o=7&rm=3");
             background-size: cover, cover;
             background-position: center, center;
             background-repeat: no-repeat, no-repeat;
@@ -163,9 +175,27 @@
             border-radius: 50%;
             animation: float 6s ease-in-out infinite;
         }
-        .floating-element:nth-child(1) { top: 20%; left: 10%; width: 100px; height: 100px; animation-delay: 0s; }
-        .floating-element:nth-child(2) { top: 60%; right: 15%; width: 80px; height: 80px; animation-delay: 2s; }
-        .floating-element:nth-child(3) { bottom: 20%; left: 20%; width: 120px; height: 120px; animation-delay: 4s; }
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            animation-delay: 0s;
+        }
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 2s;
+        }
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 4s;
+        }
         .section-box {
             background: white;
             border-radius: 15px;
@@ -214,7 +244,9 @@
             background: linear-gradient(90deg, transparent, rgba(30, 58, 138, 0.05), transparent);
             transition: left 0.5s ease;
         }
-        .feature-card:hover::before { left: 100%; }
+        .feature-card:hover::before {
+            left: 100%;
+        }
         .feature-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
@@ -279,7 +311,9 @@
             object-fit: cover;
             border-bottom: 1px solid #eee;
         }
-        .news-card-content { padding: 1.5rem; }
+        .news-card-content {
+            padding: 1.5rem;
+        }
         .news-card-content h3 {
             font-size: 1.25rem;
             margin-bottom: 0.75rem;
@@ -307,7 +341,9 @@
             font-size: 0.85rem;
             color: #888;
         }
-        .news-card-meta .author, .news-card-meta .date { font-weight: 500; }
+        .news-card-meta .author, .news-card-meta .date {
+            font-weight: 500;
+        }
         .footer {
             background: #333;
             color: white;
@@ -321,14 +357,18 @@
             gap: 2rem;
             margin-bottom: 2rem;
         }
-        .footer-section h3 { margin-bottom: 1rem; color: #3b82f6; }
-        .footer-section p,
-        .footer-section a {
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+        .footer-section p, .footer-section a {
             color: #ccc;
             text-decoration: none;
             line-height: 1.8;
         }
-        .footer-section a:hover { color: #3b82f6; }
+        .footer-section a:hover {
+            color: #3b82f6;
+        }
         .social-links {
             display: flex;
             justify-content: center;
@@ -356,12 +396,22 @@
             color: #888;
         }
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
         }
         .fade-in {
             opacity: 0;
@@ -372,9 +422,28 @@
             opacity: 1;
             transform: translateY(0);
         }
+        /* New CSS for the organizational structure image */
+        .struktur-organisasi {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .struktur-organisasi img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .struktur-organisasi img:hover {
+            transform: scale(1.02);
+        }
         @media (max-width: 768px) {
-            .nav-container, .container { padding: 0 1rem; }
-            .hamburger { display: flex; }
+            .nav-container, .container {
+                padding: 0 1rem;
+            }
+            .hamburger {
+                display: flex;
+            }
             .nav-menu {
                 position: fixed;
                 left: -100%;
@@ -389,10 +458,19 @@
                 max-height: calc(100vh - 70px);
                 overflow-y: auto;
             }
-            .nav-menu.active { left: 0; }
-            .hero h1 { font-size: 2.5rem; }
-            .hero p { font-size: 1rem; }
-            .section-title { font-size: 2rem; margin-bottom: 2rem; }
+            .nav-menu.active {
+                left: 0;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
             .features-grid, .destinations-grid, .news-grid, .features-grid2 {
                 grid-template-columns: 1fr;
             }
@@ -400,6 +478,9 @@
                 padding: 2rem 1.5rem;
                 margin-top: 2.5rem;
                 margin-bottom: 2.5rem;
+            }
+            .struktur-organisasi img {
+                max-width: 100%;
             }
         }
     </style>
@@ -417,69 +498,90 @@
             </div>
         </div>
     </section>
+    
     <section class="features" id="about">
-        <div class="container section-box fade-in"> <h2 class="section-title">Perangkat Nagari</h2>
+        <div class="container section-box fade-in">
+            
+            <h2 class="section-title" style="margin-top: 4rem;">Wali Nagari</h2>
             <div class="features-grid2">
-                <% if (perangkat_nagari && perangkat_nagari.length > 0) { %>
-                    <% perangkat_nagari.forEach(p => { %>
-                    <div class="feature-card fade-in">
-                        <img src="/<%= p.foto %>" alt="<%= p.nama %>">
-                        <h3><%= p.nama %></h3>
-                        <p><%= p.jabatan %></p>
-                    </div>
-                    <% }); %>
+                <% if (waliNagari) { %>
+                <div class="feature-card fade-in">
+                    <img src="/<%= waliNagari.foto %>" alt="<%= waliNagari.nama %>">
+                    <h3><%= waliNagari.nama %></h3>
+                    <p><%= waliNagari.jabatan %></p>
+                </div>
                 <% } else { %>
-                    <p class="fade-in" style="text-align: center; width: 100%; grid-column: 1 / -1;">Belum ada data perangkat nagari.</p>
+                <p class="fade-in" style="text-align: center; width: 100%; grid-column: 1 / -1;">Belum ada data Wali Nagari.</p>
+                <% } %>
+            </div>
+
+            <h2 class="section-title">Struktur Organisasi</h2>
+            <div class="struktur-organisasi fade-in">
+                <% if (strukturOrganisasi) { %>
+                <img src="/<%= strukturOrganisasi.foto %>" alt="<%= strukturOrganisasi.nama %>" style="max-width:1000px; width:100%; height:auto;">
+
+                <% } else { %>
+                <p>Belum ada data Struktur Organisasi.</p>
                 <% } %>
             </div>
         </div>
     </section>
     <section class="news-section" id="berita">
-        <div class="container section-box fade-in"> <h2 class="section-title">Berita Terkini</h2>
+        <div class="container section-box fade-in">
+            <h2 class="section-title">Berita Terkini</h2>
             <div class="news-grid">
                 <% if (berita && berita.length > 0) { %>
-                    <% berita.slice(0, 3).forEach(item => { %>
-                    <a href="/berita-public/<%= item.id %>" class="news-card fade-in">
-                        <img src="<%= item.gambar || '/uploads/berita/default-news.jpg' %>" alt="<%= item.judul %>" class="news-card-image">
-                        <div class="news-card-content">
-                            <h3><%= item.judul %></h3>
-                            <p><%= item.isi_berita.substring(0, 120) %>...</p>
-                            <div class="news-card-meta">
-                                <span class="date">📅 <%= new Date(item.tanggal_dibuat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></span>
-                                <span class="author">✍️ <%= item.author %></span>
-                            </div>
+                <% berita.slice(0, 3).forEach(item => { %>
+                <a href="/berita-public/<%= item.id %>" class="news-card fade-in">
+                    <img src="<%= item.gambar || '/uploads/berita/default-news.jpg' %>" alt="<%= item.judul %>" class="news-card-image">
+                    <div class="news-card-content">
+                        <h3><%= item.judul %></h3>
+                        <p><%= item.isi_berita.substring(0, 120) %>...</p>
+                        <div class="news-card-meta">
+                            <span class="date">📅 <%= new Date(item.tanggal_dibuat).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %></span>
+                            <span class="author">✍️ <%= item.author %></span>
                         </div>
-                    </a>
-                    <% }); %>
+                    </div>
+                </a>
+                <% }); %>
                 <% } else { %>
-                    <p class="fade-in" style="text-align: center; width: 100%; grid-column: 1 / -1;">Belum ada berita yang dipublikasikan.</p>
+                <p class="fade-in" style="text-align: center; width: 100%; grid-column: 1 / -1;">Belum ada berita yang dipublikasikan.</p>
                 <% } %>
             </div>
             <% if (berita && berita.length > 3) { %>
-                <div style="text-align: center; margin-top: 3rem;">
-                    <a href="/berita-public" class="cta-button fade-in">Lihat Semua Berita</a>
-                </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="/berita-public" class="cta-button fade-in">Lihat Semua Berita</a>
+            </div>
             <% } %>
         </div>
     </section>
     <section class="features">
-        <div class="container section-box fade-in"> <h2 class="section-title">Pelayanan Kami</h2>
+        <div class="container section-box fade-in">
+            <h2 class="section-title">Pelayanan Kami</h2>
             <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🏔️</div>
-                    <h3>Destinasi Unik</h3>
-                    <p>Jelajahi tempat-tempat menakjubkan yang jarang dikunjungi wisatawan, dari pegunungan hingga pantai tersembunyi.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🎭</div>
-                    <h3>Budaya Lokal</h3>
-                    <p>Rasakan pengalaman autentik dengan berinteraksi langsung dengan masyarakat lokal dan tradisi mereka.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🏕️</div>
-                    <h3>UMKM Lokal</h3>
-                    <p>Dukung usaha mikro, kecil, dan menengah lokal dengan berbelanja produk-produk mereka.</p>
-                </div>
+                <a href="/potensiuser" style="text-decoration:none; color:inherit; display:inline-block;">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🏔️</div>
+                        <h3>Destinasi Unik</h3>
+                        <p>Jelajahi tempat-tempat menakjubkan yang jarang dikunjungi wisatawan, dari pegunungan hingga pantai tersembunyi.</p>
+                    </div>
+                </a>
+
+                <a href="/potensiuser" style="text-decoration:none; color:inherit; display:inline-block;">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🎭</div>
+                        <h3>Budaya Lokal</h3>
+                        <p>Rasakan pengalaman autentik dengan berinteraksi langsung dengan masyarakat lokal dan tradisi mereka.</p>
+                    </div>
+                </a>
+
+                <a href="/umkm" style="text-decoration:none; color:inherit; display:inline-block;">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🏕️</div>
+                        <h3>UMKM Lokal</h3>
+                        <p>Dukung usaha mikro, kecil, dan menengah lokal dengan berbelanja produk-produk mereka.</p>
+                    </div>
+                </a>
             </div>
         </div>
     </section>

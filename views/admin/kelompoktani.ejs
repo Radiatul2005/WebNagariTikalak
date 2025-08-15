@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelompok Tani</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #3b82f6;
+            --light: #f8f9fa;
+            --gray: #e2e8f0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: var(--light);
+            padding-top: 70px;
+            overflow-x: hidden;
+        }
+        .navbar {
+            position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px); z-index: 1000; padding: 1rem 0; transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(255,255,255,0.98); box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;
+        }
+        .logo {
+            font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .nav-menu {
+            display: flex; list-style: none; gap: 2rem;
+        }
+        .nav-menu a {
+            text-decoration: none; color: #333; font-weight: 500; transition: color 0.3s ease; position: relative;
+        }
+        .nav-menu a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after { width: 100%; }
+        .nav-menu a:hover { color: var(--primary); }
+        .hamburger {
+            display: none; flex-direction: column; cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px; height: 3px; background: #333; margin: 3px 0; transition: 0.3s;
+        }
+        .container {
+            max-width: 1500px;
+            margin: 2.5rem auto;
+            padding: 0 2rem;
+            margin-top: 0.05rem;
+        }
+        
+        /* Header dengan tombol tambah */
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            color: #333;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Statistik */
+        .stats-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 2.5rem;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary);
+            min-width: 250px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 1rem;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .btn-tambah {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 10px;
+        }
+        
+        .btn-tambah:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-tambah:before {
+            content: '+ ';
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        
+        .form-table-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .form-table-container.show {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-table-container h3 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-sizing: border-box;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end;
+        }
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+        .btn-secondary {
+            background: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-secondary:hover {
+            background: #555;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .btn-cancel {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);
+        }
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+        .btn-edit {
+            background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.2);
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            border-radius: 5px;
+        }
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+        .btn-delete {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.2);
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            border-radius: 5px;
+        }
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        }
+        
+        .table-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+        }
+
+        .table-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+        }
+
+        .table-actions {
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .kelompoktani-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .kelompoktani-table th,
+        .kelompoktani-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .kelompoktani-table th {
+            background: #f0f2f5;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        .kelompoktani-table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        .kelompoktani-table td {
+            font-size: 0.9rem;
+            color: #555;
+            vertical-align: middle;
+        }
+        .kelompoktani-table td:last-child {
+            white-space: nowrap;
+        }
+        .kelompoktani-table td button {
+            margin-right: 5px;
+        }
+        .error-message, .info-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary);
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+                margin: 1.5rem auto;
+            }
+            .page-header,
+            .form-table-container,
+            .table-container {
+                padding: 1.5rem;
+            }
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            .form-actions {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            .form-actions .btn {
+                width: 100%;
+            }
+            .kelompoktani-table th,
+            .kelompoktani-table td {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+            .stats-row {
+                flex-direction: column;
+            }
+            .stat-card {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>Manajemen Kelompok Tani</h1>
+            <p>Kelola data kelompok tani di Nagari Tikalak</p>
+        </div>
+
+        <!-- Statistik - 2 baris, 2x2 -->
+        <div class="stats-container">
+            <!-- Baris pertama -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-kelompok">0</div>
+                    <div class="stat-label">Total Kelompok Tani</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-anggota">0</div>
+                    <div class="stat-label">Total Anggota</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form tersembunyi -->
+        <div class="form-table-container" id="form-container">
+            <h3 id="form-title">Tambah Kelompok Tani Baru</h3>
+            <form id="kelompoktani-form" action="javascript:void(0);" method="post">
+                <input type="hidden" id="kelompokId" name="kelompokId">
+                <div class="form-group">
+                    <label for="nama_kelompok">Nama Kelompok Tani:</label>
+                    <input type="text" id="nama_kelompok" name="nama_kelompok" required>
+                </div>
+                <div class="form-group">
+                    <label for="ketua_kelompok">Nama Ketua Kelompok:</label>
+                    <input type="text" id="ketua_kelompok" name="ketua_kelompok" required>
+                </div>
+                <div class="form-group">
+                    <label for="jumlah_anggota">Jumlah Anggota:</label>
+                    <input type="number" id="jumlah_anggota" name="jumlah_anggota" required min="1">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Simpan Data</button>
+                    <button type="button" class="btn btn-secondary" id="reset-form-btn">Reset Form</button>
+                    <button type="button" class="btn btn-cancel" id="cancel-form-btn">Batal</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabel dengan header yang sama seperti penduduk -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Daftar Kelompok Tani</h3>
+                <div class="table-actions">
+                    <button type="button" class="btn-tambah" id="toggle-form-btn">Tambah Kelompok</button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="kelompoktani-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Kelompok</th>
+                            <th>Ketua Kelompok</th>
+                            <th>Jumlah Anggota</th>
+                            <th>Tanggal Dibuat</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kelompoktani-table-body">
+                        <tr><td colspan="6" class="loading">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="message-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            loadKelompokTaniData();
+            
+            // Event listeners
+            document.getElementById('kelompoktani-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                saveKelompokTani(event);
+            });
+            document.getElementById('toggle-form-btn').addEventListener('click', toggleForm);
+            document.getElementById('reset-form-btn').addEventListener('click', resetForm);
+            document.getElementById('cancel-form-btn').addEventListener('click', hideForm);
+            
+            const navbar = document.querySelector('.navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        });
+
+        function toggleForm() {
+            const formContainer = document.getElementById('form-container');
+            
+            if (formContainer.classList.contains('show')) {
+                hideForm();
+            } else {
+                showForm();
+            }
+        }
+
+        function showForm() {
+            const formContainer = document.getElementById('form-container');
+            formContainer.classList.add('show');
+        }
+
+        function hideForm() {
+            const formContainer = document.getElementById('form-container');
+            const toggleBtn = document.getElementById('toggle-form-btn');
+            
+            formContainer.classList.remove('show');
+            toggleBtn.textContent = 'Tambah Kelompok';
+            toggleBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            resetForm();
+        }
+
+        function showMessage(message, type = 'info') {
+            const container = document.getElementById('message-container');
+            container.innerHTML = `<div class="${type}-message">${message}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        function resetForm() {
+            document.getElementById('kelompoktani-form').reset();
+            document.getElementById('kelompokId').value = '';
+            document.getElementById('form-title').innerHTML = 'Tambah Kelompok Tani Baru';
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/kelompoktani/api/kelompoktani/stats');
+                const result = await response.json();
+                if (result.success) {
+                    const stats = result.data;
+                    document.getElementById('total-kelompok').textContent = stats.total_kelompok || 0;
+                    document.getElementById('total-anggota').textContent = stats.total_anggota || 0;
+                }
+            } catch (error) {
+                showMessage('Gagal memuat statistik', 'error');
+            }
+        }
+
+        async function loadKelompokTaniData() {
+            try {
+                const response = await fetch('/kelompoktani/api/kelompoktani');
+                const result = await response.json();
+                const tableBody = document.getElementById('kelompoktani-table-body');
+                if (result.success && result.data.length > 0) {
+                    let tableHTML = '';
+                    result.data.forEach((kelompok, index) => {
+                        const tanggalDibuat = new Date(kelompok.tanggal_dibuat).toLocaleDateString('id-ID');
+                        tableHTML += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td><strong>${kelompok.nama_kelompok}</strong></td>
+                                <td>${kelompok.ketua_kelompok}</td>
+                                <td>${kelompok.jumlah_anggota} orang</td>
+                                <td>${tanggalDibuat}</td>
+                                <td>
+                                    <button class="btn btn-edit" onclick="editKelompokTani(${kelompok.id}, '${kelompok.nama_kelompok}', '${kelompok.ketua_kelompok}', ${kelompok.jumlah_anggota})">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-delete" onclick="deleteKelompokTani(${kelompok.id}, '${kelompok.nama_kelompok}')">
+                                        Hapus
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    tableBody.innerHTML = tableHTML;
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #666;">Belum ada data kelompok tani</td></tr>';
+                }
+            } catch (error) {
+                showMessage('Gagal memuat data: ' + error.message, 'error');
+                document.getElementById('kelompoktani-table-body').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #dc2626;">Error memuat data</td></tr>';
+            }
+        }
+
+        async function saveKelompokTani(event) {
+            const form = event.target;
+            const id = form.kelompokId.value;
+            const nama_kelompok = form.nama_kelompok.value;
+            const ketua_kelompok = form.ketua_kelompok.value;
+            const jumlah_anggota = parseInt(form.jumlah_anggota.value);
+            const kelompokData = { nama_kelompok, ketua_kelompok, jumlah_anggota };
+            let url = '/kelompoktani/api/kelompoktani';
+            let method = 'POST';
+            if (id) {
+                url = `/kelompoktani/api/kelompoktani/${id}`;
+                method = 'PUT';
+            }
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(kelompokData)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showMessage(result.message, 'info');
+                    hideForm();
+                    loadKelompokTaniData();
+                    loadStats();
+                } else {
+                    showMessage('Error: ' + result.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Gagal menyimpan data: ' + error.message, 'error');
+            }
+        }
+
+        function editKelompokTani(id, nama_kelompok, ketua_kelompok, jumlah_anggota) {
+            showForm();
+            const form = document.getElementById('kelompoktani-form');
+            form.kelompokId.value = id;
+            form.nama_kelompok.value = nama_kelompok;
+            form.ketua_kelompok.value = ketua_kelompok;
+            form.jumlah_anggota.value = jumlah_anggota;
+            document.getElementById('form-title').innerHTML = 'Edit Kelompok Tani (ID: ' + id + ')';
+        }
+
+        async function deleteKelompokTani(id, nama_kelompok) {
+            if (confirm(`Apakah Anda yakin ingin menghapus kelompok tani "${nama_kelompok}"?`)) {
+                try {
+                    const response = await fetch(`/kelompoktani/api/kelompoktani/${id}`, {
+                        method: 'DELETE'
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        showMessage(result.message, 'info');
+                        loadKelompokTaniData();
+                        loadStats();
+                    } else {
+                        showMessage('Error: ' + result.error, 'error');
+                    }
+                } catch (error) {
+                    showMessage('Gagal menghapus data: ' + error.message, 'error');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

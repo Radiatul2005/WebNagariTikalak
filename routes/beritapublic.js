@@ -1,12 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database'); // Adjust path if necessary
+const db = require('../database');
 
-// Route to display a single news article
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        // Fetch only published news articles
         const [rows] = await db.query(
             `SELECT id, judul, isi_berita, gambar, tanggal_dibuat, author 
              FROM berita 
@@ -15,7 +13,6 @@ router.get('/:id', async (req, res) => {
         );
 
         if (rows.length === 0) {
-            // If no news found or not published, render a 404 error page
             return res.status(404).render('errors/404', {
                 title: 'Berita Tidak Ditemukan',
                 message: 'Berita yang Anda cari tidak ditemukan atau belum dipublikasikan.'
@@ -24,14 +21,14 @@ router.get('/:id', async (req, res) => {
 
         const newsItem = rows[0];
 
-        res.render('users/berita-detail', { // You will create 'users/berita-detail.ejs'
+        res.render('users/berita-detail', {
             title: newsItem.judul,
             news: newsItem
         });
 
     } catch (error) {
         console.error('Error fetching public news detail:', error);
-        res.status(500).render('errors/500', { // You will create 'errors/500.ejs'
+        res.status(500).render('errors/500', {
             title: 'Kesalahan Server Internal',
             message: 'Terjadi kesalahan saat memuat detail berita.',
             error: error
@@ -39,7 +36,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Optional: Route to display all public news articles (for the "Lihat Semua Berita" button)
 router.get('/', async (req, res) => {
     try {
         const [allNews] = await db.query(
@@ -49,7 +45,7 @@ router.get('/', async (req, res) => {
              ORDER BY tanggal_dibuat DESC`
         );
 
-        res.render('public/berita-list', { // You will create 'public/berita-list.ejs'
+        res.render('public/berita-list', {
             title: 'Daftar Berita',
             berita: allNews
         });

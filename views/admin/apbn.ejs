@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APBN Nagari - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #3b82f6;
+            --light: #f8f9fa;
+            --gray: #e2e8f0;
+            --success: #10b981;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: var(--light);
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            color: #333;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .year-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .year-filter select {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            color: #333;
+        }
+
+        .stats-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 2.5rem;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+            min-width: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        }
+
+        .stat-card.success::before {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+
+        .stat-card.warning::before {
+            background: linear-gradient(135deg, var(--warning) 0%, #f1c40f 100%);
+        }
+
+        .stat-card.danger::before {
+            background: linear-gradient(135deg, var(--danger) 0%, #c0392b 100%);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .stat-card.success .stat-icon {
+            color: var(--success);
+        }
+
+        .stat-card.warning .stat-icon {
+            color: var(--warning);
+        }
+
+        .stat-card.danger .stat-icon {
+            color: var(--danger);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .progress-container {
+            margin-top: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .btn-tambah {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 10px;
+        }
+        
+        .btn-tambah:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-tambah:before {
+            content: '+ ';
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        
+        .form-table-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-table-container h3 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-sizing: border-box;
+        }
+        
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: #555;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-cancel {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);
+        }
+        
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.2);
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            border-radius: 5px;
+        }
+        
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.2);
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            border-radius: 5px;
+        }
+        
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        }
+        
+        .table-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+        }
+
+        .table-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+        }
+
+        .table-actions {
+            margin-top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table th {
+            background: #f0f2f5;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .data-table td {
+            font-size: 0.9rem;
+            color: #555;
+            vertical-align: middle;
+        }
+        
+        .data-table td:last-child {
+            white-space: nowrap;
+        }
+        
+        .data-table td button {
+            margin-right: 5px;
+        }
+
+        .currency {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .percentage {
+            font-weight: 600;
+        }
+
+        .percentage.good {
+            color: var(--success);
+        }
+
+        .percentage.warning {
+            color: var(--warning);
+        }
+
+        .percentage.danger {
+            color: var(--danger);
+        }
+        
+        .error-message, .info-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary);
+        }
+
+        .section {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>Dashboard APBN Nagari</h1>
+            <p>Ringkasan anggaran dan pengeluaran</p>
+            <div class="year-filter">
+                <select id="tahunFilter" onchange="loadDashboardData()">
+                    <option value="2024">Tahun 2024</option>
+                    <option value="2023">Tahun 2023</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <i class="fas fa-wallet stat-icon"></i>
+                    <div class="stat-number" id="totalAnggaran">Rp 0</div>
+                    <div class="stat-label">Total Anggaran</div>
+                </div>
+                <div class="stat-card success">
+                    <i class="fas fa-money-bill-wave stat-icon"></i>
+                    <div class="stat-number" id="totalPengeluaran">Rp 0</div>
+                    <div class="stat-label">Total Pengeluaran</div>
+                </div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-card warning">
+                    <i class="fas fa-piggy-bank stat-icon"></i>
+                    <div class="stat-number" id="sisaAnggaran">Rp 0</div>
+                    <div class="stat-label">Sisa Anggaran</div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">0% terpakai</div>
+                    </div>
+                </div>
+                <div class="stat-card danger">
+                    <i class="fas fa-chart-line stat-icon"></i>
+                    <div class="stat-number" id="jumlahBidang">0</div>
+                    <div class="stat-label">Total Bidang</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Ringkasan Anggaran Per Bidang</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Bidang</th>
+                            <th>Anggaran</th>
+                            <th>Pengeluaran</th>
+                            <th>Sisa</th>
+                            <th>Persentase</th>
+                        </tr>
+                    </thead>
+                    <tbody id="overview-table-body">
+                        <tr><td colspan="6" class="loading">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-table-container">
+            <div class="form-section">
+                <h1 id="form-bidang-title" style="text-align:center;">Kelola Bidang</h1>
+                <p style="text-align:center;">Tambah dan kelola daftar bidang yang ada di nagari</p>
+                <br>
+                <form id="bidang-form" action="javascript:void(0);">
+                    <input type="hidden" id="bidangFormId" name="bidangFormId">
+                    <div class="form-group">
+                        <label for="nama_bidang_baru">Nama Bidang:</label>
+                        <input type="text" id="nama_bidang_baru" name="nama_bidang_baru" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Simpan Bidang</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetBidangForm()">Reset</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="table-section" style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem;">Daftar Bidang</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Bidang</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bidang-table-body">
+                            <tr><td colspan="3" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="bidang-message"></div>
+            </div>
+        </div>
+
+        <div class="form-table-container">
+            <div class="form-section">
+                <h1 style="text-align:center;">Kelola Anggaran</h1>
+                <p style="text-align:center;">Atur anggaran per bidang untuk tahun berjalan</p>
+                <br>
+                <br>
+                <form id="anggaran-form" action="javascript:void(0);">
+                    <input type="hidden" id="anggaranId" name="anggaranId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tahun_anggaran">Tahun Anggaran:</label>
+                            <select id="tahun_anggaran" name="tahun_anggaran" required>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bidang_id_anggaran">Pilih Bidang:</label>
+                            <select id="bidang_id_anggaran" name="bidang_id_anggaran" required>
+                                <option value="">-- Pilih Bidang --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="jumlah_anggaran">Jumlah Anggaran (Rp):</label>
+                        <input type="number" id="jumlah_anggaran" name="jumlah_anggaran" required min="0">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Simpan Anggaran</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetAnggaranForm()">Reset</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-section" style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem;">Daftar Anggaran Bidang</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tahun</th>
+                                <th>Nama Bidang</th>
+                                <th>Anggaran</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="anggaran-table-body">
+                            <tr><td colspan="6" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="anggaran-message"></div>
+            </div>
+        </div>
+
+        <div class="form-table-container">
+            <div class="form-section">
+                <h1 style="text-align:center;">Input Pengeluaran</h1>
+                <p style="text-align:center;">Catat pengeluaran dari setiap bidang</p>
+                <br>
+                <br>
+                <form id="pengeluaran-form" action="javascript:void(0);">
+                    <input type="hidden" id="pengeluaranId" name="pengeluaranId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bidang_id">Pilih Bidang:</label>
+                            <select id="bidang_id" name="bidang_id" required>
+                                <option value="">-- Pilih Bidang --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal_pengeluaran">Tanggal Pengeluaran:</label>
+                            <input type="date" id="tanggal_pengeluaran" name="tanggal_pengeluaran" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan:</label>
+                            <input type="text" id="keterangan" name="keterangan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jumlah_pengeluaran">Jumlah Pengeluaran (Rp):</label>
+                            <input type="number" id="jumlah_pengeluaran" name="jumlah_pengeluaran" required min="0">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Simpan Pengeluaran</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetPengeluaranForm()">Reset</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-section" style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem;">Daftar Pengeluaran</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Bidang</th>
+                                <th>Keterangan</th>
+                                <th>Jumlah</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pengeluaran-table-body">
+                            <tr><td colspan="6" class="loading">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="pengeluaran-message"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var API_BASE_URL = window.location.origin + '/admin/apbn/api';
+
+        // Utility Functions
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        function showMessage(message, type, containerId) {
+            var container = document.getElementById(containerId);
+            if (container) {
+                container.innerHTML = '<div class="' + type + '-message">' + message + '</div>';
+                setTimeout(function() {
+                    container.innerHTML = '';
+                }, 5000);
+            }
+        }
+
+        // Dashboard Functions
+        async function loadDashboardData() {
+            var tahun = document.getElementById('tahunFilter').value;
+            var tableBody = document.getElementById('overview-table-body');
+            tableBody.innerHTML = '<tr><td colspan="6" class="loading">Memuat data...</td></tr>';
+
+            try {
+                var response = await fetch(API_BASE_URL + '/dashboard?tahun=' + tahun);
+                if (!response.ok) throw new Error('Failed to fetch dashboard data');
+                var data = await response.json();
+                
+                document.getElementById('totalAnggaran').textContent = formatRupiah(data.totalAnggaran);
+                document.getElementById('totalPengeluaran').textContent = formatRupiah(data.totalPengeluaran);
+                document.getElementById('sisaAnggaran').textContent = formatRupiah(data.sisaAnggaran);
+                document.getElementById('jumlahBidang').textContent = data.jumlahBidang;
+                
+                var percentage = (data.totalAnggaran > 0) ? (data.totalPengeluaran / data.totalAnggaran) * 100 : 0;
+                document.getElementById('progressFill').style.width = percentage + '%';
+                document.getElementById('progressText').textContent = Math.round(percentage) + '% terpakai';
+                
+                updateOverviewTable(data.bidangData);
+                
+            } catch (error) {
+                showMessage('Gagal memuat data dashboard: ' + error.message, 'error', 'dashboard-message');
+            }
+        }
+
+        function updateOverviewTable(bidangData) {
+            var tableBody = document.getElementById('overview-table-body');
+            
+            if (bidangData.length > 0) {
+                var tableHTML = '';
+                bidangData.forEach(function(bidang, index) {
+                    var percentage = (bidang.anggaran > 0) ? (bidang.pengeluaran / bidang.anggaran) * 100 : 0;
+                    var percentageClass = percentage > 80 ? 'danger' : percentage > 60 ? 'warning' : 'good';
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td><strong>${bidang.nama_bidang}</strong></td>
+                            <td class="currency">${formatRupiah(bidang.anggaran)}</td>
+                            <td class="currency">${formatRupiah(bidang.pengeluaran)}</td>
+                            <td class="currency">${formatRupiah(bidang.anggaran - bidang.pengeluaran)}</td>
+                            <td class="percentage ${percentageClass}">${Math.round(percentage)}%</td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = tableHTML;
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #666;">Belum ada data anggaran</td></tr>';
+            }
+        }
+
+        // Bidang Functions
+        async function loadBidangData() {
+            try {
+                var response = await fetch(API_BASE_URL + '/bidang');
+                if (!response.ok) throw new Error('Failed to fetch bidang data');
+                var data = await response.json();
+                updateBidangTable(data);
+                loadBidangOptions(data, 'bidang_id_anggaran');
+                loadBidangOptions(data, 'bidang_id');
+            } catch (error) {
+                showMessage('Gagal memuat data bidang: ' + error.message, 'error', 'bidang-message');
+            }
+        }
+
+        function updateBidangTable(data) {
+            var tableBody = document.getElementById('bidang-table-body');
+            if (data.length > 0) {
+                var tableHTML = '';
+                data.forEach(function(bidang, index) {
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td><strong>${bidang.nama_bidang}</strong></td>
+                            <td>
+                                <button class="btn btn-edit" data-id="${bidang.id}">Edit</button>
+                                <button class="btn btn-delete" data-id="${bidang.id}" data-nama="${bidang.nama_bidang}">Hapus</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = tableHTML;
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 2rem; color: #666;">Belum ada data bidang</td></tr>';
+            }
+        }
+        
+        function loadBidangOptions(bidangData, elementId) {
+            var selectElement = document.getElementById(elementId);
+            var optionsHTML = '<option value="">-- Pilih Bidang --</option>';
+            if (bidangData) {
+                bidangData.forEach(function(bidang) {
+                    optionsHTML += '<option value="' + bidang.id + '">' + bidang.nama_bidang + '</option>';
+                });
+            }
+            selectElement.innerHTML = optionsHTML;
+        }
+
+        async function saveBidang(event) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+            var bidangId = document.getElementById('bidangFormId').value;
+            var method = bidangId ? 'PUT' : 'POST';
+            var url = bidangId ? API_BASE_URL + '/bidang/' + bidangId : API_BASE_URL + '/bidang';
+
+            try {
+                var response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama_bidang: formData.get('nama_bidang_baru') })
+                });
+
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save bidang data');
+                }
+
+                showMessage('Data bidang berhasil disimpan!', 'info', 'bidang-message');
+                resetBidangForm();
+                loadBidangData();
+            } catch (error) {
+                showMessage('Gagal menyimpan data bidang: ' + error.message, 'error', 'bidang-message');
+            }
+        }
+
+        async function editBidang(id) {
+            try {
+                var response = await fetch(API_BASE_URL + '/bidang/' + id);
+                if (!response.ok) throw new Error('Failed to fetch bidang data for editing');
+                var bidang = await response.json();
+
+                document.getElementById('bidangFormId').value = bidang.id;
+                document.getElementById('nama_bidang_baru').value = bidang.nama_bidang;
+                document.getElementById('form-bidang-title').textContent = 'Edit Bidang - ' + bidang.nama_bidang;
+            } catch (error) {
+                showMessage('Gagal memuat data bidang untuk edit: ' + error.message, 'error', 'bidang-message');
+            }
+        }
+
+        async function deleteBidang(id, namaBidang) {
+            if (confirm('Apakah Anda yakin ingin menghapus bidang "' + namaBidang + '"?')) {
+                try {
+                    var response = await fetch(API_BASE_URL + '/bidang/' + id, { method: 'DELETE' });
+                    if (!response.ok) throw new Error('Failed to delete bidang data');
+                    
+                    showMessage('Data bidang berhasil dihapus!', 'info', 'bidang-message');
+                    loadBidangData();
+                } catch (error) {
+                    showMessage('Gagal menghapus data bidang: ' + error.message, 'error', 'bidang-message');
+                }
+            }
+        }
+
+        function resetBidangForm() {
+            document.getElementById('bidang-form').reset();
+            document.getElementById('bidangFormId').value = '';
+            document.getElementById('form-bidang-title').textContent = 'Tambah Bidang';
+        }
+
+        // Anggaran Functions
+        async function loadAnggaranData() {
+            try {
+                var response = await fetch(API_BASE_URL + '/anggaran');
+                if (!response.ok) throw new Error('Failed to fetch anggaran data');
+                var data = await response.json();
+                updateAnggaranTable(data);
+                
+            } catch (error) {
+                showMessage('Gagal memuat data anggaran: ' + error.message, 'error', 'anggaran-message');
+            }
+        }
+
+        function updateAnggaranTable(data) {
+            var tableBody = document.getElementById('anggaran-table-body');
+            
+            if (data.length > 0) {
+                var tableHTML = '';
+                data.forEach(function(anggaran, index) {
+                    var statusClass = 'Aktif'; 
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${anggaran.tahun}</td>
+                            <td><strong>${anggaran.nama_bidang}</strong></td>
+                            <td class="currency">${formatRupiah(anggaran.jumlah_anggaran)}</td>
+                            <td><span class="percentage ${statusClass}">${statusClass}</span></td>
+                            <td>
+                                <button class="btn btn-edit" data-id="${anggaran.id}">Edit</button>
+                                <button class="btn btn-delete" data-id="${anggaran.id}" data-nama="${anggaran.nama_bidang}">Hapus</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = tableHTML;
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #666;">Belum ada data anggaran</td></tr>';
+            }
+        }
+
+        async function saveAnggaran(event) {
+            event.preventDefault();
+            
+            var formData = new FormData(event.target);
+            var anggaranId = document.getElementById('anggaranId').value;
+            var method = anggaranId ? 'PUT' : 'POST';
+            var url = anggaranId ? API_BASE_URL + '/anggaran/' + anggaranId : API_BASE_URL + '/anggaran';
+            
+            try {
+                var response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tahun: formData.get('tahun_anggaran'),
+                        bidang_id: formData.get('bidang_id_anggaran'),
+                        jumlah_anggaran: parseInt(formData.get('jumlah_anggaran'))
+                    })
+                });
+                
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save anggaran data');
+                }
+                
+                showMessage('Data anggaran berhasil disimpan!', 'info', 'anggaran-message');
+                resetAnggaranForm();
+                loadAnggaranData();
+                loadDashboardData();
+                
+            } catch (error) {
+                showMessage('Gagal menyimpan data anggaran: ' + error.message, 'error', 'anggaran-message');
+            }
+        }
+
+        async function editAnggaran(id) {
+            try {
+                var response = await fetch(API_BASE_URL + '/anggaran/' + id);
+                if (!response.ok) throw new Error('Failed to fetch anggaran data for editing');
+                var anggaran = await response.json();
+                
+                document.getElementById('anggaranId').value = anggaran.id;
+                document.getElementById('tahun_anggaran').value = anggaran.tahun;
+                document.getElementById('bidang_id_anggaran').value = anggaran.bidang_id;
+                document.getElementById('jumlah_anggaran').value = anggaran.jumlah_anggaran;
+            } catch (error) {
+                showMessage('Gagal memuat data anggaran untuk edit: ' + error.message, 'error', 'anggaran-message');
+            }
+        }
+
+        function resetAnggaranForm() {
+            document.getElementById('anggaran-form').reset();
+            document.getElementById('anggaranId').value = '';
+        }
+
+        async function deleteAnggaran(id, namaBidang) {
+            if (confirm('Apakah Anda yakin ingin menghapus anggaran "' + namaBidang + '"?')) {
+                try {
+                    var response = await fetch(API_BASE_URL + '/anggaran/' + id, {
+                        method: 'DELETE'
+                    });
+                    if (!response.ok) throw new Error('Failed to delete anggaran data');
+                    
+                    showMessage('Data anggaran berhasil dihapus!', 'info', 'anggaran-message');
+                    loadAnggaranData();
+                    loadDashboardData();
+                    
+                } catch (error) {
+                    showMessage('Gagal menghapus data anggaran: ' + error.message, 'error', 'anggaran-message');
+                }
+            }
+        }
+
+        // Pengeluaran Functions
+        async function loadPengeluaranData() {
+            try {
+                var response = await fetch(API_BASE_URL + '/pengeluaran');
+                if (!response.ok) throw new Error('Failed to fetch pengeluaran data');
+                var data = await response.json();
+                updatePengeluaranTable(data);
+                
+            } catch (error) {
+                showMessage('Gagal memuat data pengeluaran: ' + error.message, 'error', 'pengeluaran-message');
+            }
+        }
+
+        function updatePengeluaranTable(data) {
+            var tableBody = document.getElementById('pengeluaran-table-body');
+            
+            if (data.length > 0) {
+                var tableHTML = '';
+                data.forEach(function(pengeluaran, index) {
+                    var tanggal = new Date(pengeluaran.tanggal_pengeluaran).toLocaleDateString('id-ID');
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${tanggal}</td>
+                            <td><strong>${pengeluaran.nama_bidang}</strong></td>
+                            <td>${pengeluaran.keterangan}</td>
+                            <td class="currency">${formatRupiah(pengeluaran.jumlah_pengeluaran)}</td>
+                            <td>
+                                <button class="btn btn-edit" data-id="${pengeluaran.id}">Edit</button>
+                                <button class="btn btn-delete" data-id="${pengeluaran.id}" data-keterangan="${pengeluaran.keterangan}">Hapus</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = tableHTML;
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #666;">Belum ada data pengeluaran</td></tr>';
+            }
+        }
+
+        async function savePengeluaran(event) {
+            event.preventDefault();
+            
+            var formData = new FormData(event.target);
+            var pengeluaranId = document.getElementById('pengeluaranId').value;
+            var method = pengeluaranId ? 'PUT' : 'POST';
+            var url = pengeluaranId ? API_BASE_URL + '/pengeluaran/' + pengeluaranId : API_BASE_URL + '/pengeluaran';
+            
+            try {
+                var response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bidang_id: formData.get('bidang_id'),
+                        tanggal_pengeluaran: formData.get('tanggal_pengeluaran'),
+                        keterangan: formData.get('keterangan'),
+                        jumlah_pengeluaran: parseInt(formData.get('jumlah_pengeluaran'))
+                    })
+                });
+                
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to save pengeluaran data');
+                }
+                
+                showMessage('Data pengeluaran berhasil disimpan!', 'info', 'pengeluaran-message');
+                resetPengeluaranForm();
+                loadPengeluaranData();
+                loadDashboardData();
+                
+            } catch (error) {
+                showMessage('Gagal menyimpan data pengeluaran: ' + error.message, 'error', 'pengeluaran-message');
+            }
+        }
+
+        async function editPengeluaran(id) {
+            try {
+                var response = await fetch(API_BASE_URL + '/pengeluaran/' + id);
+                if (!response.ok) throw new Error('Failed to fetch pengeluaran data for editing');
+                var pengeluaran = await response.json();
+                
+                document.getElementById('pengeluaranId').value = pengeluaran.id;
+                document.getElementById('bidang_id').value = pengeluaran.bidang_id;
+                document.getElementById('tanggal_pengeluaran').value = pengeluaran.tanggal_pengeluaran;
+                document.getElementById('keterangan').value = pengeluaran.keterangan;
+                document.getElementById('jumlah_pengeluaran').value = pengeluaran.jumlah_pengeluaran;
+            } catch (error) {
+                showMessage('Gagal memuat data pengeluaran untuk edit: ' + error.message, 'error', 'pengeluaran-message');
+            }
+        }
+
+        function resetPengeluaranForm() {
+            document.getElementById('pengeluaran-form').reset();
+            document.getElementById('pengeluaranId').value = '';
+            document.getElementById('tanggal_pengeluaran').value = new Date().toISOString().split('T')[0];
+        }
+
+        async function deletePengeluaran(id, keterangan) {
+            if (confirm('Apakah Anda yakin ingin menghapus pengeluaran "' + keterangan + '"?')) {
+                try {
+                    var response = await fetch(API_BASE_URL + '/pengeluaran/' + id, {
+                        method: 'DELETE'
+                    });
+                    if (!response.ok) throw new Error('Failed to delete pengeluaran data');
+                    
+                    showMessage('Data pengeluaran berhasil dihapus!', 'info', 'pengeluaran-message');
+                    loadPengeluaranData();
+                    loadDashboardData();
+                    
+                } catch (error) {
+                    showMessage('Gagal menghapus data pengeluaran: ' + error.message, 'error', 'pengeluaran-message');
+                }
+            }
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+            loadBidangData();
+            loadAnggaranData();
+            loadPengeluaranData();
+            
+            document.getElementById('bidang-form').addEventListener('submit', saveBidang);
+            document.getElementById('anggaran-form').addEventListener('submit', saveAnggaran);
+            document.getElementById('pengeluaran-form').addEventListener('submit', savePengeluaran);
+            
+            document.getElementById('tanggal_pengeluaran').value = new Date().toISOString().split('T')[0];
+
+            // Delegasi event untuk tabel Bidang
+            document.getElementById('bidang-table-body').addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.classList.contains('btn-edit')) {
+                    const id = target.getAttribute('data-id');
+                    editBidang(id);
+                } else if (target.classList.contains('btn-delete')) {
+                    const id = target.getAttribute('data-id');
+                    const namaBidang = target.getAttribute('data-nama');
+                    deleteBidang(id, namaBidang);
+                }
+            });
+
+            // Delegasi event untuk tabel Anggaran
+            document.getElementById('anggaran-table-body').addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.classList.contains('btn-edit')) {
+                    const id = target.getAttribute('data-id');
+                    editAnggaran(id);
+                } else if (target.classList.contains('btn-delete')) {
+                    const id = target.getAttribute('data-id');
+                    const namaBidang = target.getAttribute('data-nama');
+                    deleteAnggaran(id, namaBidang);
+                }
+            });
+
+            // Delegasi event untuk tabel Pengeluaran
+            document.getElementById('pengeluaran-table-body').addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.classList.contains('btn-edit')) {
+                    const id = target.getAttribute('data-id');
+                    editPengeluaran(id);
+                } else if (target.classList.contains('btn-delete')) {
+                    const id = target.getAttribute('data-id');
+                    const keterangan = target.getAttribute('data-keterangan');
+                    deletePengeluaran(id, keterangan);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

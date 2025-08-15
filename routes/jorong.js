@@ -1,70 +1,75 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database'); // Adjust path if your database.js is elsewhere
+const db = require('../database');
 
-// GET route for the Jorong data page
-// This route is defined as '/' because its actual base path will be set in app.js
 router.get('/', async (req, res) => {
     try {
-        // First, get all unique jorong names from the 'jorong' table
-        // Assuming you have a 'jorong' table with a 'nama_jorong' column
-        const [allJorongs] = await db.query(`SELECT namaJorong FROM jorong WHERE namaJorong IS NOT NULL`);
+        const [jorongRows] = await db.query(`
+            SELECT 
+                namaJorong, 
+                jumlahWarga, 
+                jumlahPenerimaBantuan 
+            FROM jorong 
+            WHERE namaJorong IS NOT NULL 
+            ORDER BY namaJorong ASC
+        `);
 
-        // Initialize jorongMap with all jorongs, setting counts to 0
-        const jorongMap = new Map();
-        allJorongs.forEach(j => {
-            // Only add if namaJorong is not null or undefined
-            if (j.namaJorong) {
-                jorongMap.set(j.namaJorong, {
-                    nama_jorong: j.namaJorong,
-                    jumlah_warga: 0,
-                    jumlah_keluarga: 0, // Still 0 as no family identifier in 'penduduk'
-                    jumlah_penerima_bantuan: 0
-                });
-            }
-        });
-
-        // Now, fetch data from the 'penduduk' table
-        const [pendudukRows] = await db.query(`SELECT jorong, dapatBantuan FROM penduduk WHERE jorong IS NOT NULL`);
-
-        // Iterate through 'penduduk' data to update counts in the map
-        pendudukRows.forEach(row => {
-            const jorongName = row.jorong;
-            const isAidRecipient = row.dapatBantuan === 1;
-
-            // Only update if the jorong exists in our initial list and is not null
-            if (jorongName && jorongMap.has(jorongName)) {
-                const jorongData = jorongMap.get(jorongName);
-                jorongData.jumlah_warga++; // Increment citizen count
-
-                if (isAidRecipient) {
-                    jorongData.jumlah_penerima_bantuan++;
-                }
-            }
-        });
-
-        // Convert the map values to an array for rendering
-        const processedJorongData = Array.from(jorongMap.values()).map(jorong => ({
-            namaJorong: jorong.nama_jorong,
-            jumlah_warga: jorong.jumlah_warga,
-            jumlah_keluarga: jorong.jumlah_keluarga,
-            jumlah_penerima_bantuan: jorong.jumlah_penerima_bantuan
+        const processedJorongData = jorongRows.map(jorong => ({
+            namaJorong: jorong.namaJorong || 'Nama Jorong Tidak Tersedia',
+            jumlah_warga: parseInt(jorong.jumlahWarga) || 0,
+            jumlah_keluarga: 0,
+            jumlah_penerima_bantuan: parseInt(jorong.jumlahPenerimaBantuan) || 0
         }));
 
-        // Sort the data by jorong name for consistent display
-        // Add null check to prevent localeCompare error
-        processedJorongData.sort((a, b) => {
-            const nameA = a.namaJorong || '';
-            const nameB = b.namaJorong || '';
-            return nameA.localeCompare(nameB);
-        });
+        console.log('Processed Jorong Data:', processedJorongData);
 
         res.render('admin/jorong', { jorongData: processedJorongData });
 
     } catch (err) {
         console.error('Error fetching jorong data:', err);
-        // Render with an empty array or a specific error message if data fetching fails
         res.render('admin/jorong', { jorongData: [], error: 'Failed to load jorong data.' });
+    }
+});
+
+router.post('/add', async (req, res) => {
+    try {
+        const { namaJorong } = req.body;
+
+        if (!namaJorong || namaJorong.trim() === '') {
+            return res.status(400).json({
+                success: false,
+                message: 'Nama jorong tidak boleh kosong'
+            });
+        }
+
+        const [existingJorong] = await db.query(
+            'SELECT id FROM jorong WHERE namaJorong = ?',
+            [namaJorong.trim()]
+        );
+
+        if (existingJorong.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Jorong dengan nama tersebut sudah ada'
+            });
+        }
+
+        await db.query(
+            'INSERT INTO jorong (namaJorong, jumlahWarga, jumlahPenerimaBantuan) VALUES (?, ?, ?)',
+            [namaJorong.trim(), 0, 0]
+        );
+
+        res.json({
+            success: true,
+            message: 'Jorong berhasil ditambahkan'
+        });
+
+    } catch (err) {
+        console.error('Error adding jorong:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Terjadi kesalahan server'
+        });
     }
 });
 

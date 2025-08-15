@@ -3,483 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenSID - Nagari Tikalak</title>
+    <title>Dashboard - Nagari Tikalak</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f8f9fa; min-height: 100vh; }
+        
+        .header { background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 68px; }
+        .header h1 { font-size: 28px; font-weight: 700; color: white; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .admin-info { display: flex; align-items: center; gap: 10px; }
+        .admin-avatar { width: 35px; height: 35px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        .main-wrapper { display: flex; padding-top: 68px; min-height: 100vh; }
+        
+        .sidebar { width: 280px; background: linear-gradient(180deg, #1e293b 0%, #1e40af 100%); color: white; position: fixed; top: 68px; left: 0; height: calc(100vh - 68px); overflow-y: auto; z-index: 999; }
+        .sidebar-header { padding: 25px; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-logo { display: flex; align-items: center; gap: 15px; }
+        .logo-icon { width: 45px; height: 45px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+        .sidebar-title { font-size: 16px; font-weight: 600; }
+        .sidebar-subtitle { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+        .menu-section { padding: 20px 0; }
+        .menu-title { padding: 0 25px 15px; font-size: 11px; font-weight: 600; color: #a5b4fc; text-transform: uppercase; letter-spacing: 1px; }
+        .menu-item { padding: 12px 25px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 12px; border-left: 3px solid transparent; }
+        .menu-item:hover { background: rgba(59, 130, 246, 0.15); border-left-color: #3b82f6; }
+        .menu-item.active { background: rgba(59, 130, 246, 0.25); border-left-color: #3b82f6; color: #fff; }
+        .menu-item a { text-decoration: none; color: inherit; display: flex; align-items: center; flex-grow: 1; }
+        .menu-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+        
+        .main-content-area { flex-grow: 1; margin-left: 280px; padding: 30px; min-height: calc(100vh - 68px); background: #f8f9fa; }
+        
+        .page-header { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .page-title { font-size: 24px; font-weight: 700; color: #1e3a8a; margin-bottom: 8px; }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; color: #64748b; font-size: 14px; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%); }
+        .stat-number { font-size: 36px; font-weight: 700; color: #1e3a8a; margin-bottom: 8px; }
+        .stat-label { font-size: 16px; color: #64748b; margin-bottom: 15px; }
+        .stat-button { background: rgba(59, 130, 246, 0.1); color: #1e3a8a; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.3s; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+        .stat-button:hover { background: rgba(59, 130, 246, 0.2); }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
-            min-height: 100vh;
-        }
+        .struktur-card, .wali-nagari-card { background: #f1f5f9; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+        .struktur-photo, .wali-nagari-photo { max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        .struktur-info, .wali-nagari-name, .wali-nagari-jabatan { font-size: 18px; color: #1e3a8a; font-weight: 600; margin-top: 5px; }
+        .wali-nagari-photo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; }
+        .action-buttons { display: flex; align-items: center; gap: 10px; }
 
-        .header {
-            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
+        .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; }
+        .modal-content { background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 90%; max-width: 500px; text-align: left; }
+        .close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close-button:hover, .close-button:focus { color: #000; text-decoration: none; cursor: pointer; }
 
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #4a5568; }
+        .form-group input[type="file"], .form-group input[type="text"] { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; }
+        .form-actions { display: flex; justify-content: flex-end; margin-top: 30px; }
+        .btn { padding: 12px 25px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: background-color 0.3s; }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-primary:hover { background: #1e3a8a; }
+        .add-edit-button { display: inline-block; background: #2563eb; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 500; border: none; cursor: pointer; transition: background-color 0.3s; }
+        .add-edit-button:hover { background: #1e3a8a; }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .header-icons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .header-icon {
-            padding: 8px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .header-icon:hover {
-            background: rgba(255,255,255,0.25);
-        }
-
-        .admin-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .admin-avatar {
-            width: 35px;
-            height: 35px;
-            background: #2563eb;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .container {
-            display: flex;
-            min-height: calc(100vh - 70px);
-        }
-
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #1e293b 0%, #1e40af 100%);
-            color: white;
-            padding: 0;
-            overflow-y: auto;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
-        }
-
-        .sidebar-header {
-            padding: 25px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: #2563eb;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .sidebar-title {
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        .sidebar-subtitle {
-            font-size: 12px;
-            opacity: 0.8;
-            margin-top: 2px;
-        }
-
-        .menu-section {
-            padding: 20px 0;
-        }
-
-        .menu-title {
-            padding: 0 25px 15px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #a5b4fc;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .menu-item {
-            padding: 12px 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-left: 3px solid transparent;
-        }
-
-        .menu-item:hover {
-            background: rgba(59, 130, 246, 0.15);
-            border-left-color: #3b82f6;
-        }
-
-        .menu-item.active {
-            background: rgba(59, 130, 246, 0.25);
-            border-left-color: #3b82f6;
-            color: #3b82f6;
-        }
-
-        .menu-icon {
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            background: white;
-        }
-
-        .page-header {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1e3a8a;
-            margin-bottom: 8px;
-        }
-
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .update-alert {
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
-        }
-
-        .update-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .update-text {
-            font-size: 14px;
-            line-height: 1.6;
-            opacity: 0.95;
-            margin-bottom: 15px;
-        }
-
-        .update-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
-        }
-
-        .btn-secondary {
-            background: rgba(30, 58, 138, 0.2);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(30, 58, 138, 0.3);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-        }
-
-        .stat-card.purple::before,
-        .stat-card.blue::before,
-        .stat-card.green::before,
-        .stat-card.red::before,
-        .stat-card.gray::before,
-        .stat-card.orange::before {
-            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1e3a8a;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 16px;
-            color: #64748b;
-            margin-bottom: 15px;
-        }
-
-        .stat-button {
-            background: rgba(59, 130, 246, 0.1);
-            color: #1e3a8a;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .stat-button:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
-
-        .sidebar-section {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .sidebar-section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1e3a8a;
-            margin-bottom: 20px;
-        }
-
-        .info-section {
-            margin-bottom: 25px;
-        }
-
-        .info-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #3b82f6;
-            margin-bottom: 10px;
-        }
-
-        .info-text {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #64748b;
-            margin-bottom: 15px;
-        }
-
-        .info-link {
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .info-link:hover {
-            text-decoration: underline;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 30px;
-        }
-
-        @media (max-width: 1200px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: auto;
-            }
-            
-            .main-content {
-                padding: 20px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 <body>
-<%- include('../partials/header_admin', { title: 'Dashboard', currentPage: 'home' }) %>
-
-        <div class="main-content">
-            <div class="main-grid">
-                <div class="main-section">
-                    <div class="page-header">
-                        <h2 class="page-title">Tentang OpenSID</h2>
-                        <div class="breadcrumb">
-                            <span>🏠 Home</span>
-                            <span>→</span>
-                            <span>Nagari Tikalak</span>
-                        </div>
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card purple">
-                            <div class="stat-number">4</div>
-                            <div class="stat-label">Wilayah Dusun</div>
-                            <button class="stat-button">
-                                <a href="/jorong" style="text-decoration: none; color: inherit;">Lihat Detail</a> <span>→</span>
-                            </button>
-                        </div>
-
-                        <div class="stat-card blue">
-                            <div class="stat-number"><%= totalPenduduk %></div> <div class="stat-label">Penduduk</div>
-                            <button class="stat-button">
-                                <a href="/penduduk" style="text-decoration: none; color: inherit;">Lihat Detail</a> <span>→</span>
-                            </button>
-                        </div>
-
-                        <div class="stat-card green">
-                            <div class="stat-number">37</div>
-                            <div class="stat-label">Keluarga</div>
-                            <button class="stat-button">
-                                Lihat Detail
-                                <span>→</span>
-                            </button>
-                        </div>
-
-                        <div class="stat-card blue">
-                            <div class="stat-number">1</div>
-                            <div class="stat-label">Surat Tercetak</div>
-                            <button class="stat-button">
-                                Lihat Detail
-                                <span>→</span>
-                            </button>
-                        </div>
-
-                        <div class="stat-card red">
-                            <div class="stat-number">0</div>
-                            <div class="stat-label">Kelompok</div>
-                            <button class="stat-button">
-                                Lihat Detail
-                                <span>→</span>
-                            </button>
-                        </div>
-
-                        <div class="stat-card gray">
-                            <div class="stat-number">0</div>
-                            <div class="stat-label">Rumah Tangga</div>
-                            <button class="stat-button">
-                                Lihat Detail
-                                <span>→</span>
-                            </button>
-                        </div>
-
-                        <div class="stat-card orange">
-                            <div class="stat-number">2</div>
-                            <div class="stat-label">BPNT</div>
-                            <button class="stat-button">
-                                <span>⭐</span>
-                                Lihat Detail
-                                <span>→</span>
-                            </button>
-                        </div>
-                    </div>
+    <div class="header"><h1>Nagari Tikalak</h1><div class="header-right"><div class="admin-info"><div class="admin-avatar">👤</div><span>Administrator</span></div></div></div>
+    <div class="main-wrapper">
+        <div class="sidebar">
+            <div class="sidebar-header"><div class="sidebar-logo"><div class="logo-icon">🏛️</div><div><div class="sidebar-title">Nagari Tikalak</div><div class="sidebar-subtitle">Kecamatan X Koto Singkarak<br>Kabupaten Solok</div></div></div></div>
+            <div class="menu-section"><div class="menu-title">Menu Utama</div><div class="menu-item active"><div class="menu-icon">🏠</div><a href="/admin/dashboard"><span>Home</span></a></div><div class="menu-item"><div class="menu-icon">ℹ️</div><a href="/berita"><span>Info Desa</span></a></div><div class="menu-item"><div class="menu-icon">👥</div><a href="/penduduk"><span>Data Penduduk</span></a></div><div class="menu-item"><div class="menu-icon">🌾</div><a href="/kelompoktani"><span>Pertanian</span></a></div><div class="menu-item"><div class="menu-icon">🐐</div><a href="/kelompokternak"><span>Peternakan</span></a></div><div class="menu-item"><div class="menu-icon">🏗️</div><a href="/potensi"><span>Destinasi</span></a></div><div class="menu-item"><div class="menu-icon">🏘️</div><a href="/jorong"><span>Data Jorong</span></a></div></div>
+        </div>
+        
+        <div class="main-content-area">
+            <div class="page-header"><h2 class="page-title">Dashboard Nagari Tikalak</h2><div class="breadcrumb"><span>X Koto Singkarak</span><span>→</span><span>Kabupaten Solok</span></div></div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-number"><%= totalJorong %></div><div class="stat-label">Wilayah Jorong</div><a href="/jorong" class="stat-button">Lihat Detail <span>→</span></a></div>
+                <div class="stat-card"><div class="stat-number"><%= totalPenduduk %></div><div class="stat-label">Penduduk</div><a href="/penduduk" class="stat-button">Lihat Detail <span>→</span></a></div>
+                <div class="stat-card"><div class="stat-number"><%= totalPertanian %></div><div class="stat-label">Kelompok Tani</div><a href="/kelompoktani" class="stat-button">Lihat Detail <span>→</span></a></div>
+                <div class="stat-card"><div class="stat-number"><%= totalPerternakan %></div><div class="stat-label">Kelompok Ternak</div><a href="/kelompokternak" class="stat-button">Lihat Detail <span>→</span></a></div>
+            </div>
+            <div class="page-header">
+                <h3 class="page-title" style="font-size: 20px;">Informasi Nagari</h3>
+                <div style="margin-top: 15px; color: #64748b; line-height: 1.6;">
+                    <p>Nagari Tikalak merupakan salah satu nagari di Kecamatan X Koto Singkarak, Kabupaten Solok, Sumatera Barat.</p>
                 </div>
             </div>
+            <div class="page-header">
+                <h3 class="page-title" style="font-size: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>Perangkat Organisasi</span>
+                    <div class="action-buttons">
+                        <button id="changeStrukturButton" class="add-edit-button">
+                            <%= strukturOrganisasi ? 'Ganti Struktur' : 'Tambah Struktur' %>
+                        </button>
+                        <button id="changeWaliNagariButton" class="add-edit-button">
+                            <%= waliNagari ? 'Edit Data Wali Nagari' : 'Tambah Wali Nagari' %>
+                        </button>
+                    </div>
+                </h3>
+                <div style="margin-top: 15px;">
+                    <% if (waliNagari) { %>
+                        <div class="wali-nagari-card">
+                            <img src="<%= waliNagari.foto %>" alt="Foto Wali Nagari" class="wali-nagari-photo">
+                            <div class="wali-nagari-name"><%= waliNagari.nama %></div>
+                            <div class="wali-nagari-jabatan"><%= waliNagari.jabatan %></div>
+                        </div>
+                    <% } else { %>
+                        <div class="info-card"><p>Data Wali Nagari belum ditambahkan.</p></div>
+                    <% } %>
+                    <% if (strukturOrganisasi) { %>
+                        <div class="struktur-card">
+                            <img src="<%= strukturOrganisasi.foto %>" alt="Struktur Organisasi" class="struktur-photo">
+                            <div class="struktur-info">Struktur Organisasi Nagari Tikalak</div>
+                        </div>
+                    <% } else { %>
+                        <div class="info-card"><p>Foto struktur organisasi belum ditambahkan.</p></div>
+                    <% } %>
+                </div>
+            </div>
+            
+            
         </div>
     </div>
+
+    <div id="strukturModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeStrukturModal">&times;</span>
+            <h2><%= strukturOrganisasi ? 'Ganti Foto Struktur' : 'Tambah Foto Struktur' %></h2>
+            <form action="/admin/struktur_organisasi/upload" method="POST" enctype="multipart/form-data">
+                <div class="form-group"><label for="fotoStruktur">Pilih Foto</label><input type="file" id="fotoStruktur" name="foto" required></div>
+                <div class="form-actions"><button type="submit" class="btn btn-primary">Simpan</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="waliNagariModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeWaliNagariModal">&times;</span>
+            <h2><%= waliNagari ? 'Ganti Data Wali Nagari' : 'Tambah Wali Nagari' %></h2>
+            <form action="/admin/wali_nagari/upload" method="POST" enctype="multipart/form-data">
+                <div class="form-group"><label for="namaWaliNagari">Nama Wali Nagari</label><input type="text" id="namaWaliNagari" name="nama" value="<%= waliNagari ? waliNagari.nama : '' %>" required></div>
+                <div class="form-group"><label for="fotoWaliNagari">Pilih Foto</label><input type="file" id="fotoWaliNagari" name="foto" <%= waliNagari ? '' : 'required' %>></div>
+                <div class="form-actions"><button type="submit" class="btn btn-primary">Simpan</button></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const strukturModal = document.getElementById('strukturModal');
+        const waliNagariModal = document.getElementById('waliNagariModal');
+        const changeStrukturButton = document.getElementById('changeStrukturButton');
+        const changeWaliNagariButton = document.getElementById('changeWaliNagariButton');
+        const closeStrukturModal = document.getElementById('closeStrukturModal');
+        const closeWaliNagariModal = document.getElementById('closeWaliNagariModal');
+
+        changeStrukturButton.onclick = function() { strukturModal.style.display = "flex"; }
+        closeStrukturModal.onclick = function() { strukturModal.style.display = "none"; }
+        
+        changeWaliNagariButton.onclick = function() { waliNagariModal.style.display = "flex"; }
+        closeWaliNagariModal.onclick = function() { waliNagariModal.style.display = "none"; }
+
+        window.onclick = function(event) {
+            if (event.target == strukturModal) { strukturModal.style.display = "none"; }
+            if (event.target == waliNagariModal) { waliNagariModal.style.display = "none"; }
+        }
+    </script>
 </body>
 </html>

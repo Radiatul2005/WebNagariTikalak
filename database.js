@@ -11,6 +11,7 @@ const dbConfig = {
     waitForConnections: true, // Tunggu koneksi jika pool sedang sibuk
     connectionLimit: 10,     // Maksimal 10 koneksi pada satu waktu
     queueLimit: 0            // Antrian tak terbatas untuk koneksi
+    // --- PASTIKAN TIDAK ADA typeCast ATAU decimalAsNumber: false DI SINI ---
 };
 
 // Buat connection pool
