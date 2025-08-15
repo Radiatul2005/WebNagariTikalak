@@ -484,10 +484,24 @@
             <p>Ringkasan anggaran dan pengeluaran</p>
             <div class="year-filter">
                 <select id="tahunFilter" onchange="loadDashboardData()">
-                    <option value="2024">Tahun 2024</option>
-                    <option value="2023">Tahun 2023</option>
+                    <!-- Tahun akan diisi dengan JavaScript -->
                 </select>
             </div>
+            <script>
+                // Isi pilihan tahun secara dinamis: 3 tahun lalu sampai 1 tahun ke depan
+                (function() {
+                    var select = document.getElementById('tahunFilter');
+                    var now = new Date();
+                    var tahunSekarang = now.getFullYear();
+                    var tahunAwal = tahunSekarang - 3;
+                    var tahunAkhir = tahunSekarang + 1;
+                    var options = '';
+                    for (var t = tahunAwal; t <= tahunAkhir; t++) {
+                        options += '<option value="' + t + '"' + (t === tahunSekarang ? ' selected' : '') + '>Tahun ' + t + '</option>';
+                    }
+                    select.innerHTML = options;
+                })();
+            </script>
         </div>
 
         <div class="stats-container">

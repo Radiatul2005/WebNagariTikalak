@@ -41,7 +41,7 @@ var makcikRouter = require('./routes/makcik');
 var kakmiaRouter = require('./routes/kakmia'); 
 var bundaRouter = require('./routes/bunda'); // Assuming you have a bunda route
 var apbnRouter = require('./routes/apbn'); // Import APBN router
-
+var publicRouter = require('./routes/public'); // Import public routes
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -153,7 +153,7 @@ app.use('/makcik', makcikRouter);
 app.use('/kakmia', kakmiaRouter);
 app.use('/bunda', bundaRouter); // Assuming you have a bunda route
 app.use('/admin/apbn', apbnRouter(db)); // Use APBN router
-
+app.use('/', publicRouter(db)); // Baris yang Anda tambahkan
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
