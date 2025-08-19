@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 19, 2025 at 03:27 PM
+-- Generation Time: Aug 19, 2025 at 04:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -280,7 +280,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `created_at`) VALUES
-(1, 'bang_oji', '$2b$10$P5iw9Vu4GgUckr7NOO2hg.ahI/SkSyhgk91DzSugb2dwmQVWsq8ky', '2025-07-12 09:19:32');
+(1, 'Kasi Pelayanan', '$2b$10$P5iw9Vu4GgUckr7NOO2hg.ahI/SkSyhgk91DzSugb2dwmQVWsq8ky', '2025-07-12 09:19:32');
 
 --
 -- Indexes for dumped tables
