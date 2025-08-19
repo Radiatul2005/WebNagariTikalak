@@ -20,7 +20,7 @@ const pool = mysql.createPool(dbConfig); // <<< PENTING: gunakan createPool dari
 // Coba koneksi saat pool dibuat untuk memastikan kredensial benar
 pool.getConnection()
     .then(connection => {
-        console.log('✅ Terhubung ke database MySQL (wali_nagari)'); // Menggunakan nama DB Anda
+        console.log('✅ Terhubung ke database MySQL (web-nagari)'); // Menggunakan nama DB Anda
         connection.release(); // Lepaskan koneksi kembali ke pool
     })
     .catch(err => {
